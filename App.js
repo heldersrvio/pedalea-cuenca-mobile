@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import GoogleSignIn from './src/GoogleSignIn';
 import Home from './src/Home';
 
 export default function App() {
