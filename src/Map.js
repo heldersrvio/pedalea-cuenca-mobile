@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import MapView, { PROVIDER_DEFAULT, MAP_TYPES } from 'react-native-maps';
+import MapView, { Polyline, PROVIDER_DEFAULT, MAP_TYPES } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -10,6 +10,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Map = (props) => {
 	const mapRef = useRef(null);
+	const [coordinates, setCoordinates] = useState([]);
 
 	const mapBoundaries = {
 		northEast: {
@@ -31,6 +32,31 @@ const Map = (props) => {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (props.route) {
+			setCoordinates(props.route.flatMap((way) => {
+				const nodes = [];
+				if (way.lat2 && way.lon2) {
+					nodes.push({
+						latitude: way.lat2,
+						longitude: way.lon2,
+					});
+				}
+				if (way.lat1 && way.lon1) {
+					nodes.push({
+						latitude: way.lat1,
+						longitude: way.lon1
+					});
+				}
+				return nodes;
+			}));
+		}
+	}, [props.route]);
+
+//	useEffect(() => {
+//		console.log(coordinates);
+//	}, [coordinates]);
+
 	return (
 		<MapView
 			ref={mapRef}
@@ -42,7 +68,10 @@ const Map = (props) => {
 			}}
 			provider={PROVIDER_DEFAULT}
 			mapType={MAP_TYPES.STANDARD}
-		></MapView>
+			style={props.style}
+		>
+			<Polyline coordinates={coordinates} strokeColor="#880808" strokeWidth={3} />
+		</MapView>
 	);
 };
 

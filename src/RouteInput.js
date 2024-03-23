@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Config from 'react-native-config';
 
-const getRouteForCoordinates = async (sLat, sLon, dLat, dLon) => {
+const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 	try {
 		const url = new URL(`${Config.API_URL}/routing`);
 		const params = {
@@ -22,7 +22,7 @@ const getRouteForCoordinates = async (sLat, sLon, dLat, dLon) => {
 			},
 		});
 		const json = await response.json();
-		console.log(json);
+		handleRoute(json);
 	} catch (err) {
 		console.log(err);
 	}
@@ -74,12 +74,12 @@ const RouteInput = (props) => {
 
 	useEffect(() => {
 		if (sLat && sLon && dLat && dLon) {
-			getRouteForCoordinates(sLat, sLon, dLat, dLon);
+			getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
 		}
 	}, [sLat, sLon, dLat, dLon]);
 
 	return (
-		<div className="route-input">
+		<View className="route-input" style={props.style}>
 			<GooglePlacesInput
 				style={styles.input}
 				setLat={setSLat}
@@ -92,7 +92,7 @@ const RouteInput = (props) => {
 				setLon={setDLon}
 				placeholder="Destinación"
 			/>
-		</div>
+		</View>
 	);
 };
 
