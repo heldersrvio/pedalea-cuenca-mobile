@@ -10,7 +10,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Map = (props) => {
 	const mapRef = useRef(null);
-	const [coordinates, setCoordinates] = useState([]);
+	const [route, setRoute] = useState([]);
 
 	const mapBoundaries = props.cityLimits;
 
@@ -25,22 +25,65 @@ const Map = (props) => {
 
 	useEffect(() => {
 		if (props.route) {
-			setCoordinates(props.route.flatMap((way) => {
+			const e2eCoordinates = props.route.flatMap((way, index) => {
 				const nodes = [];
-				if (way.lat2 && way.lon2) {
-					nodes.push({
-						latitude: way.lat2,
-						longitude: way.lon2,
-					});
+				const point1 = way.lat1 === null || way.lon1 === null ?
+				{
+					latitude: way.lat2,
+					longitude: way.lon2,
+					isCycleLane: way.isCycleLane,
+				} : way.lat2 === null || way.lon2 === null ?
+				{
+					latitude: way.lat1,
+					longitude: way.lon1,
+					isCycleLane: way.isCycleLane,
+				} :
+				index === 0 ? {
+					latitude: way.lat1,
+					longitude: way.lon1,
+					isCycleLane: way.isCycleLane,
+				} :
+					Math.abs(props.route[index - 1].lat2 - way.lat1 + props.route[index - 1].lon2 - way.lon1) <
+					Math.abs(props.route[index - 1].lat2 - way.lat2 + props.route[index - 1].lon2 - way.lon2) ?
+				{
+					latitude: way.lat1,
+					longitude: way.lon1,
+					isCycleLane: way.isCycleLane,
+				} :
+				{
+					latitude: way.lat2,
+					longitude: way.lon2,
+					isCycleLane: way.isCycleLane,
+				};
+				const point2 = point1.latitude === way.lat1 && point1.longitude === way.lon1 ?
+				{
+					latitude: way.lat2,
+					longitude: way.lon2,
+					isCycleLane: way.isCycleLane,
+				} :
+				{
+					latitude: way.lat1,
+					longitude: way.lon1,
+					isCycleLane: way.isCycleLane,
+				};
+				if (point1.latitude && point1.longitude) {
+					nodes.push(point1);
 				}
-				if (way.lat1 && way.lon1) {
-					nodes.push({
-						latitude: way.lat1,
-						longitude: way.lon1
-					});
+				if (point2.latitude && point2.longitude) {
+					nodes.push(point2);
 				}
 				return nodes;
-			}));
+			});
+			setRoute(
+				e2eCoordinates.reduce((ac, value, index) => {
+					if (index !== 0 && e2eCoordinates[index - 1].isCycleLane === value.isCycleLane) {
+						ac[ac.length - 1].push(value);
+					} else {
+						ac.push([value]);
+					}
+					return ac;
+				}, [])
+			);
 		}
 	}, [props.route]);
 
@@ -61,7 +104,13 @@ const Map = (props) => {
 			mapType={MAP_TYPES.STANDARD}
 			style={props.style}
 		>
-			<Polyline coordinates={coordinates} strokeColor="#880808" strokeWidth={3} />
+			{
+				route.map((segment, index) => {
+					return (
+						<Polyline key={index} coordinates={segment} strokeColor="#880808" strokeWidth={3} lineDashPattern={segment[0].isCycleLane ? [3] : null} />
+					);
+				})
+			}
 		</MapView>
 	);
 };
