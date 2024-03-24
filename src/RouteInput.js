@@ -33,7 +33,7 @@ const GooglePlacesInput = (props) => {
 		<GooglePlacesAutocomplete
 			fetchDetails={true}
 			styles={{
-				textInput: { backgroundColor: '#eee', width: '100%' },
+				textInput: { backgroundColor: '#ffff', width: '100%' },
 				container: {
 					width: '100%',
 					flexGrow: 0,
@@ -41,10 +41,11 @@ const GooglePlacesInput = (props) => {
 				},
 				textInputContainer: {
 					width: '100%',
+					marginTop: 7,
 				},
 				listView: {
 					position: 'absolute',
-					top: 50,
+					top: 41,
 					zIndex: 100,
 				},
 			}}
@@ -61,6 +62,7 @@ const GooglePlacesInput = (props) => {
 			query={{
 				key: Config.GOOGLE_PLACES_API_KEY,
 				language: 'en',
+				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`
 			}}
 		/>
 	);
@@ -85,12 +87,16 @@ const RouteInput = (props) => {
 				setLat={setSLat}
 				setLon={setSLon}
 				placeholder="Punto de partida"
+				minLength={5}
+				cityLimits={props.cityLimits}
 			/>
 			<GooglePlacesInput
 				style={styles.input}
 				setLat={setDLat}
 				setLon={setDLon}
 				placeholder="Destinación"
+				minLength={5}
+				cityLimits={props.cityLimits}
 			/>
 		</View>
 	);
@@ -98,7 +104,7 @@ const RouteInput = (props) => {
 
 const styles = StyleSheet.create({
 	input: {
-		margin: 10,
+		position: "relative",
 	},
 });
 

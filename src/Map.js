@@ -12,16 +12,7 @@ const Map = (props) => {
 	const mapRef = useRef(null);
 	const [coordinates, setCoordinates] = useState([]);
 
-	const mapBoundaries = {
-		northEast: {
-			latitude: -2.8683698,
-			longitude: -78.9752444,
-		},
-		southWest: {
-			latitude: -2.9380468,
-			longitude: -79.0494328,
-		},
-	};
+	const mapBoundaries = props.cityLimits;
 
 	useEffect(() => {
 		if (mapRef.current) {

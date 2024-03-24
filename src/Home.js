@@ -3,13 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import Map from './Map';
 import RouteInput from './RouteInput';
 
+const CITY_LIMITS = {
+	northEast: {
+		latitude: -2.8683698,
+		longitude: -78.9752444,
+    },
+	southWest: {
+		latitude: -2.9380468,
+		longitude: -79.0494328,
+	},
+};
+
 const Home = () => {
 	const [route, setRoute] = useState(null);
 
 	return (
 		<View style={styles.container}>
-			<Map style={styles.map} route={route} />
-			<RouteInput style={styles.routeInput} handleRoute={setRoute} />
+			<Map style={styles.map} cityLimits={CITY_LIMITS} route={route} />
+			<RouteInput style={styles.routeInput} cityLimits={CITY_LIMITS} handleRoute={setRoute} />
 		</View>
 	);
 };
@@ -41,7 +52,11 @@ const styles = StyleSheet.create({
 		right: 0,
 		display: 'flex',
 		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
 		width: '100%',
+		backgroundColor: '#ff2e16',
+		padding: 13,
 	},
 });
 
