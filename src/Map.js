@@ -107,7 +107,7 @@ const Map = (props) => {
 			{
 				route.map((segment, index) => {
 					return (
-						<Polyline key={index} coordinates={segment} strokeColor="#880808" strokeWidth={3} lineDashPattern={segment[0].isCycleLane ? [3] : null} />
+						<Polyline key={index} coordinates={segment} strokeColor={segment[0].isCycleLane ? "#0e2dff" : "#ff9c0e"} strokeWidth={3.5} lineDashPattern={segment[0].isCycleLane ? null : [3]} />
 					);
 				})
 			}
