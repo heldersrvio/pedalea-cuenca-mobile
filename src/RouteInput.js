@@ -80,6 +80,15 @@ const RouteInput = (props) => {
 		}
 	}, [sLat, sLon, dLat, dLon]);
 
+	useEffect(() => {
+		if (dLat && dLon) {
+			props.setDestination({
+				latitude: dLat,
+				longitude: dLon,
+			});
+		}
+	}, [dLat, dLon]);
+
 	return (
 		<View className="route-input" style={props.style}>
 			<GooglePlacesInput

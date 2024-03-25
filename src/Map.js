@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import MapView, { Polyline, PROVIDER_DEFAULT, MAP_TYPES } from 'react-native-maps';
+import MapView, { Polyline, Marker, PROVIDER_DEFAULT, MAP_TYPES } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -102,6 +102,8 @@ const Map = (props) => {
 			}}
 			provider={PROVIDER_DEFAULT}
 			mapType={MAP_TYPES.STANDARD}
+			showsUserLocation={true}
+			showsMyLocationButton={true}
 			style={props.style}
 		>
 			{
@@ -110,6 +112,11 @@ const Map = (props) => {
 						<Polyline key={index} coordinates={segment} strokeColor={segment[0].isCycleLane ? "#0e2dff" : "#ff9c0e"} strokeWidth={3.5} lineDashPattern={segment[0].isCycleLane ? null : [3]} />
 					);
 				})
+			}
+			{
+				props.destination ?
+				<Marker coordinate={props.destination} />
+				: null
 			}
 		</MapView>
 	);

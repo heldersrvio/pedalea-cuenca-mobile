@@ -16,11 +16,12 @@ const CITY_LIMITS = {
 
 const Home = () => {
 	const [route, setRoute] = useState(null);
+	const [destination, setDestination] = useState(null);
 
 	return (
 		<View style={styles.container}>
-			<Map style={styles.map} cityLimits={CITY_LIMITS} route={route} />
-			<RouteInput style={styles.routeInput} cityLimits={CITY_LIMITS} handleRoute={setRoute} />
+			<Map style={styles.map} cityLimits={CITY_LIMITS} route={route} destination={destination} />
+			<RouteInput style={styles.routeInput} cityLimits={CITY_LIMITS} handleRoute={setRoute} setDestination={setDestination} />
 		</View>
 	);
 };
