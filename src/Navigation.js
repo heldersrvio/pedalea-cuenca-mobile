@@ -14,7 +14,7 @@ const CITY_LIMITS = {
 	},
 };
 
-const Home = () => {
+const Navigation = () => {
 	const [route, setRoute] = useState(null);
 	const [destination, setDestination] = useState(null);
 
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Home;
+export default Navigation;
