@@ -1,5 +1,6 @@
 import Navigation from './Navigation';
 import SignIn from './SignIn';
+import Contact from './Contact';
 
 export default [
 	{
@@ -26,6 +27,13 @@ export default [
 		needsLogOut: true,
 		component: SignIn,
 		type: 'screen',
+	},
+	{
+		name: 'Contacto',
+		component: Contact,
+		type: 'screen',
+		iconType: 'Ionicons',
+		iconName: 'chatbubbles-sharp',
 	},
 	{
 		name: 'Salir',
