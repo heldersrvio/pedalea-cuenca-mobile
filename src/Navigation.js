@@ -16,6 +16,7 @@ const CITY_LIMITS = {
 
 const Navigation = () => {
 	const [route, setRoute] = useState(null);
+	const [startingPoint, setStartingPoint] = useState(null);
 	const [destination, setDestination] = useState(null);
 
 	return (
@@ -24,12 +25,14 @@ const Navigation = () => {
 				style={styles.map}
 				cityLimits={CITY_LIMITS}
 				route={route}
+				startingPoint={startingPoint}
 				destination={destination}
 			/>
 			<RouteInput
 				style={styles.routeInput}
 				cityLimits={CITY_LIMITS}
 				handleRoute={setRoute}
+				setStartingPoint={setStartingPoint}
 				setDestination={setDestination}
 			/>
 		</View>

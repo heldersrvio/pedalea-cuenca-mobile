@@ -29,6 +29,12 @@ const Map = (props) => {
 	}, []);
 
 	useEffect(() => {
+		if (props.startingPoint && props.destination && mapRef.current) {
+			mapRef.current.fitToCoordinates([props.startingPoint, props.destination]);
+		}
+	}, [props.startingPoint, props.destination]);
+
+	useEffect(() => {
 		if (props.route) {
 			const e2eCoordinates = props.route.flatMap((way, index) => {
 				const nodes = [];
