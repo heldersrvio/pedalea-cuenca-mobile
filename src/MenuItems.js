@@ -1,6 +1,7 @@
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import Contact from './Contact';
+import Account from './Account';
 
 export default [
 	{
@@ -12,13 +13,15 @@ export default [
 		component: Navigation,
 		type: 'screen',
 	},
-	//	{
-	//		name: 'Cuenta',
-	//		iconType: 'Ionicons',
-	//		iconName: 'person',
-	//		needsLogIn: true,
-	//		needsLogOut: false,
-	//	},
+	{
+		name: 'Cuenta',
+		iconType: 'Ionicons',
+		iconName: 'person',
+		needsLogIn: true,
+		needsLogOut: false,
+		component: Account,
+		type: 'screen',
+	},
 	{
 		name: 'Entrar',
 		iconType: 'Ionicons',
