@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { SignInContext } from '../App';
 import {
 	GoogleSignin,
 	GoogleSigninButton,
@@ -10,8 +11,9 @@ GoogleSignin.configure({
 	offlineAccess: false,
 });
 
-const GoogleSignIn = () => {
+const GoogleSignIn = (props) => {
 	const [isSignInInProgress, setIsSignInInProgress] = useState(false);
+	const setIsSignedIn = useContext(SignInContext);
 
 	const signIn = async () => {
 		try {
@@ -20,9 +22,15 @@ const GoogleSignIn = () => {
 			const userInfo = await GoogleSignin.signIn();
 			console.log(userInfo);
 			setIsSignInInProgress(false);
+			if (setIsSignedIn) {
+				setIsSignedIn(true);
+			}
 		} catch (error) {
 			console.log(error.message);
 			setIsSignInInProgress(false);
+			if (setIsSignedIn) {
+				setIsSignedIn(false);
+			}
 		}
 	};
 

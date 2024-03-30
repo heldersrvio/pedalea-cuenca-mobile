@@ -7,7 +7,7 @@ const CITY_LIMITS = {
 	northEast: {
 		latitude: -2.8683698,
 		longitude: -78.9752444,
-    },
+	},
 	southWest: {
 		latitude: -2.9380468,
 		longitude: -79.0494328,
@@ -20,8 +20,18 @@ const Navigation = () => {
 
 	return (
 		<View style={styles.container}>
-			<Map style={styles.map} cityLimits={CITY_LIMITS} route={route} destination={destination} />
-			<RouteInput style={styles.routeInput} cityLimits={CITY_LIMITS} handleRoute={setRoute} setDestination={setDestination} />
+			<Map
+				style={styles.map}
+				cityLimits={CITY_LIMITS}
+				route={route}
+				destination={destination}
+			/>
+			<RouteInput
+				style={styles.routeInput}
+				cityLimits={CITY_LIMITS}
+				handleRoute={setRoute}
+				setDestination={setDestination}
+			/>
 		</View>
 	);
 };

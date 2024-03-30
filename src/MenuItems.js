@@ -1,3 +1,6 @@
+import Navigation from './Navigation';
+import SignIn from './SignIn';
+
 export default [
 	{
 		name: 'Navegación',
@@ -5,20 +8,24 @@ export default [
 		iconName: 'navigate-sharp',
 		needsLogIn: false,
 		needsLogOut: false,
+		component: Navigation,
+		type: 'screen',
 	},
-	{
-		name: 'Cuenta',
-		iconType: 'Ionicons',
-		iconName: 'person',
-		needsLogIn: true,
-		needsLogOut: false,
-	},
+	//	{
+	//		name: 'Cuenta',
+	//		iconType: 'Ionicons',
+	//		iconName: 'person',
+	//		needsLogIn: true,
+	//		needsLogOut: false,
+	//	},
 	{
 		name: 'Entrar',
 		iconType: 'Ionicons',
 		iconName: 'enter',
 		needsLogIn: false,
 		needsLogOut: true,
+		component: SignIn,
+		type: 'screen',
 	},
 	{
 		name: 'Salir',
@@ -26,5 +33,7 @@ export default [
 		iconName: 'exit',
 		needsLogIn: true,
 		needsLogOut: false,
+		component: null,
+		type: 'item',
 	},
 ];

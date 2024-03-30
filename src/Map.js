@@ -1,6 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
-import MapView, { Polyline, Marker, PROVIDER_DEFAULT, MAP_TYPES } from 'react-native-maps';
+import MapView, {
+	Polyline,
+	Marker,
+	PROVIDER_DEFAULT,
+	MAP_TYPES,
+} from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,45 +32,60 @@ const Map = (props) => {
 		if (props.route) {
 			const e2eCoordinates = props.route.flatMap((way, index) => {
 				const nodes = [];
-				const point1 = way.lat1 === null || way.lon1 === null ?
-				{
-					latitude: way.lat2,
-					longitude: way.lon2,
-					isCycleLane: way.isCycleLane,
-				} : way.lat2 === null || way.lon2 === null ?
-				{
-					latitude: way.lat1,
-					longitude: way.lon1,
-					isCycleLane: way.isCycleLane,
-				} :
-				index === 0 ? {
-					latitude: way.lat1,
-					longitude: way.lon1,
-					isCycleLane: way.isCycleLane,
-				} :
-					Math.abs(props.route[index - 1].lat2 - way.lat1 + props.route[index - 1].lon2 - way.lon1) <
-					Math.abs(props.route[index - 1].lat2 - way.lat2 + props.route[index - 1].lon2 - way.lon2) ?
-				{
-					latitude: way.lat1,
-					longitude: way.lon1,
-					isCycleLane: way.isCycleLane,
-				} :
-				{
-					latitude: way.lat2,
-					longitude: way.lon2,
-					isCycleLane: way.isCycleLane,
-				};
-				const point2 = point1.latitude === way.lat1 && point1.longitude === way.lon1 ?
-				{
-					latitude: way.lat2,
-					longitude: way.lon2,
-					isCycleLane: way.isCycleLane,
-				} :
-				{
-					latitude: way.lat1,
-					longitude: way.lon1,
-					isCycleLane: way.isCycleLane,
-				};
+				const point1 =
+					way.lat1 === null || way.lon1 === null
+						? {
+								latitude: way.lat2,
+								longitude: way.lon2,
+								isCycleLane: way.isCycleLane,
+							}
+						: way.lat2 === null || way.lon2 === null
+							? {
+									latitude: way.lat1,
+									longitude: way.lon1,
+									isCycleLane: way.isCycleLane,
+								}
+							: index === 0
+								? {
+										latitude: way.lat1,
+										longitude: way.lon1,
+										isCycleLane: way.isCycleLane,
+									}
+								: Math.abs(
+											props.route[index - 1].lat2 -
+												way.lat1 +
+												props.route[index - 1].lon2 -
+												way.lon1,
+									  ) <
+									  Math.abs(
+											props.route[index - 1].lat2 -
+												way.lat2 +
+												props.route[index - 1].lon2 -
+												way.lon2,
+									  )
+									? {
+											latitude: way.lat1,
+											longitude: way.lon1,
+											isCycleLane: way.isCycleLane,
+										}
+									: {
+											latitude: way.lat2,
+											longitude: way.lon2,
+											isCycleLane: way.isCycleLane,
+										};
+				const point2 =
+					point1.latitude === way.lat1 &&
+					point1.longitude === way.lon1
+						? {
+								latitude: way.lat2,
+								longitude: way.lon2,
+								isCycleLane: way.isCycleLane,
+							}
+						: {
+								latitude: way.lat1,
+								longitude: way.lon1,
+								isCycleLane: way.isCycleLane,
+							};
 				if (point1.latitude && point1.longitude) {
 					nodes.push(point1);
 				}
@@ -76,20 +96,24 @@ const Map = (props) => {
 			});
 			setRoute(
 				e2eCoordinates.reduce((ac, value, index) => {
-					if (index !== 0 && e2eCoordinates[index - 1].isCycleLane === value.isCycleLane) {
+					if (
+						index !== 0 &&
+						e2eCoordinates[index - 1].isCycleLane ===
+							value.isCycleLane
+					) {
 						ac[ac.length - 1].push(value);
 					} else {
 						ac.push([value]);
 					}
 					return ac;
-				}, [])
+				}, []),
 			);
 		}
 	}, [props.route]);
 
-//	useEffect(() => {
-//		console.log(coordinates);
-//	}, [coordinates]);
+	//	useEffect(() => {
+	//		console.log(coordinates);
+	//	}, [coordinates]);
 
 	return (
 		<MapView
@@ -106,18 +130,22 @@ const Map = (props) => {
 			showsMyLocationButton={true}
 			style={props.style}
 		>
-			{
-				route.map((segment, index) => {
-					return (
-						<Polyline key={index} coordinates={segment} strokeColor={segment[0].isCycleLane ? "#0e2dff" : "#ff9c0e"} strokeWidth={3.5} lineDashPattern={segment[0].isCycleLane ? null : [3]} />
-					);
-				})
-			}
-			{
-				props.destination ?
+			{route.map((segment, index) => {
+				return (
+					<Polyline
+						key={index}
+						coordinates={segment}
+						strokeColor={
+							segment[0].isCycleLane ? '#0e2dff' : '#ff9c0e'
+						}
+						strokeWidth={3.5}
+						lineDashPattern={segment[0].isCycleLane ? null : [3]}
+					/>
+				);
+			})}
+			{props.destination ? (
 				<Marker coordinate={props.destination} />
-				: null
-			}
+			) : null}
 		</MapView>
 	);
 };

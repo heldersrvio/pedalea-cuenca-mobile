@@ -62,7 +62,7 @@ const GooglePlacesInput = (props) => {
 			query={{
 				key: Config.GOOGLE_PLACES_API_KEY,
 				language: 'en',
-				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`
+				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`,
 			}}
 		/>
 	);
@@ -113,7 +113,7 @@ const RouteInput = (props) => {
 
 const styles = StyleSheet.create({
 	input: {
-		position: "relative",
+		position: 'relative',
 	},
 });
 
