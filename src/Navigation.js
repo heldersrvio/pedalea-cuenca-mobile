@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Map from './Map';
+import MapLegend from './MapLegend';
 import RouteInput from './RouteInput';
 
 const CITY_LIMITS = {
@@ -35,6 +36,7 @@ const Navigation = () => {
 				setStartingPoint={setStartingPoint}
 				setDestination={setDestination}
 			/>
+		{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
 		</View>
 	);
 };
@@ -71,6 +73,13 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: '#ff2e16',
 		padding: 13,
+	},
+	mapLegend: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		width: '100%',
 	},
 });
 
