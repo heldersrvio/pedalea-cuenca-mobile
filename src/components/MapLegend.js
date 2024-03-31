@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	},
 	cycleLaneSymbol: {
 		width: 60,
-        height: 4,
+		height: 4,
 		backgroundColor: '#0e2dff',
 		marginRight: 5,
 	},

@@ -1,6 +1,6 @@
 import { useState, createContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Navigation from './src/Navigation';
+import Navigation from './src/components/screens/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import {
 	createDrawerNavigator,
@@ -11,8 +11,8 @@ import {
 import MenuItems from './src/MenuItems';
 import { Ionicons } from '@expo/vector-icons';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import SignInContext from './src/contexts/SignInContext';
 
-export const SignInContext = createContext(null);
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -61,31 +61,28 @@ export default function App() {
 							(drawer.needsLogOut && !isSignedIn) ||
 							(!drawer.needsLogIn && !drawer.needsLogOut)
 						) {
-							if (drawer.type === 'screen') {
-								return (
-									<Drawer.Screen
-										key={drawer.name}
-										name={drawer.name}
-										options={{
-											drawerIcon: () => (
-												<Ionicons
-													name={drawer.iconName}
-													size={24}
-													color="black"
-												/>
-											),
-										}}
-										component={drawer.component}
-										drawerContent={(props) => (
-											<CustomDrawerContent
-												{...props}
-												signOut={signOut}
+							return (
+								<Drawer.Screen
+									key={drawer.name}
+									name={drawer.name}
+									options={{
+										drawerIcon: () => (
+											<Ionicons
+												name={drawer.iconName}
+												size={24}
+												color="black"
 											/>
-										)}
-									/>
-								);
-							}
-							return null;
+										),
+									}}
+									component={drawer.component}
+									drawerContent={(props) => (
+										<CustomDrawerContent
+											{...props}
+											signOut={signOut}
+										/>
+									)}
+								/>
+							);
 						}
 						return null;
 					})}

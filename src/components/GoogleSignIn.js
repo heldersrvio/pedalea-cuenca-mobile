@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { SignInContext } from '../App';
+import SignInContext from '../contexts/SignInContext';
 import {
 	GoogleSignin,
 	GoogleSigninButton,

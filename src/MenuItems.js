@@ -1,7 +1,7 @@
-import Navigation from './Navigation';
-import SignIn from './SignIn';
-import Contact from './Contact';
-import Account from './Account';
+import Navigation from './components/screens/Navigation';
+import SignIn from './components/screens/SignIn';
+import Contact from './components/screens/Contact';
+import Account from './components/screens/Account';
 
 export default [
 	{
@@ -11,7 +11,6 @@ export default [
 		needsLogIn: false,
 		needsLogOut: false,
 		component: Navigation,
-		type: 'screen',
 	},
 	{
 		name: 'Cuenta',
@@ -20,7 +19,6 @@ export default [
 		needsLogIn: true,
 		needsLogOut: false,
 		component: Account,
-		type: 'screen',
 	},
 	{
 		name: 'Entrar',
@@ -29,22 +27,13 @@ export default [
 		needsLogIn: false,
 		needsLogOut: true,
 		component: SignIn,
-		type: 'screen',
 	},
 	{
 		name: 'Contacto',
 		component: Contact,
-		type: 'screen',
 		iconType: 'Ionicons',
 		iconName: 'chatbubbles-sharp',
-	},
-	{
-		name: 'Salir',
-		iconType: 'Ionicons',
-		iconName: 'exit',
-		needsLogIn: true,
+		needsLogIn: false,
 		needsLogOut: false,
-		component: null,
-		type: 'item',
 	},
 ];

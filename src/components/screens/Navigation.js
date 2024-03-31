@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Map from './Map';
-import MapLegend from './MapLegend';
-import RouteInput from './RouteInput';
+import Map from '../Map';
+import MapLegend from '../MapLegend';
+import RouteInput from '../RouteInput';
 
 const CITY_LIMITS = {
 	northEast: {
@@ -36,7 +36,7 @@ const Navigation = () => {
 				setStartingPoint={setStartingPoint}
 				setDestination={setDestination}
 			/>
-		{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
+			{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
 		</View>
 	);
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import GoogleSignIn from './GoogleSignIn';
+import GoogleSignIn from '../GoogleSignIn';
 
 const SignIn = (props) => {
 	return (

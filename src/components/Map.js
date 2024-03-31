@@ -30,7 +30,10 @@ const Map = (props) => {
 
 	useEffect(() => {
 		if (props.startingPoint && props.destination && mapRef.current) {
-			mapRef.current.fitToCoordinates([props.startingPoint, props.destination]);
+			mapRef.current.fitToCoordinates([
+				props.startingPoint,
+				props.destination,
+			]);
 		}
 	}, [props.startingPoint, props.destination]);
 
