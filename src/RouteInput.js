@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Config from 'react-native-config';
 
+navigator.geolocation = require('@react-native-community/geolocation');
+
 const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 	try {
 		const url = new URL(`${Config.API_URL}/routing`);
@@ -47,6 +49,9 @@ const GooglePlacesInput = (props) => {
 					position: 'absolute',
 					top: 41,
 					zIndex: 100,
+					paddingTop: 9,
+					paddingBottom: 9,
+					backgroundColor: 'white',
 				},
 			}}
 			enablePoweredByContainer={false}
@@ -59,11 +64,15 @@ const GooglePlacesInput = (props) => {
 					props.setLon(location.lng);
 				}
 			}}
+			currentLocation={props.currentLocation}
+			currentLocationLabel={'Ubicación actual'}
+			nearbyPlacesAPI={'None'}
 			query={{
 				key: Config.GOOGLE_PLACES_API_KEY,
 				language: 'en',
 				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`,
 			}}
+			GoogleReverseGeoCodingQuery={null}
 		/>
 	);
 };
@@ -107,6 +116,7 @@ const RouteInput = (props) => {
 				placeholder="Punto de partida"
 				minLength={5}
 				cityLimits={props.cityLimits}
+				currentLocation={true}
 			/>
 			<GooglePlacesInput
 				style={styles.input}
@@ -115,6 +125,7 @@ const RouteInput = (props) => {
 				placeholder="Destinación"
 				minLength={5}
 				cityLimits={props.cityLimits}
+				currentLocation={false}
 			/>
 		</View>
 	);
