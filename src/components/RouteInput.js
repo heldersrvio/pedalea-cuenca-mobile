@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Config from 'react-native-config';
+import SignInContext from '../contexts/SignInContext';
+import * as SecureStore from 'expo-secure-store';
 
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -16,11 +18,17 @@ const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 		};
 		url.search = new URLSearchParams(params).toString();
 		console.log(params);
+		const token = await SecureStore.getItemAsync('login_token');
+		if (!token) {
+			console.log('User not logged in');
+			return;
+		}
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
 		});
 		const json = await response.json();
@@ -82,10 +90,17 @@ const RouteInput = (props) => {
 	const [sLon, setSLon] = useState(null);
 	const [dLat, setDLat] = useState(null);
 	const [dLon, setDLon] = useState(null);
+	const { isSignedIn } = useContext(SignInContext);
 
 	useEffect(() => {
 		if (sLat && sLon && dLat && dLon) {
-			getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
+			if (isSignedIn) {
+				getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
+			} else {
+				if (props.enableSignInModal) {
+					props.enableSignInModal();
+				}
+			}
 		}
 	}, [sLat, sLon, dLat, dLon]);
 

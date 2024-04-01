@@ -4,6 +4,8 @@ import {
 	GoogleSignin,
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import Config from 'react-native-config';
+import * as SecureStore from 'expo-secure-store';
 
 GoogleSignin.configure({
 	webClientId:
@@ -11,16 +13,32 @@ GoogleSignin.configure({
 	offlineAccess: false,
 });
 
+const signInToBackEnd = async (idToken) => {
+	const url = new URL(`${Config.API_URL}/signin`);
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			idToken,
+		}),
+	});
+	const json = await response.json();
+	await SecureStore.setItemAsync('login_token', json.token);
+};
+
 const GoogleSignIn = (props) => {
 	const [isSignInInProgress, setIsSignInInProgress] = useState(false);
-	const setIsSignedIn = useContext(SignInContext);
+	const { setIsSignedIn } = useContext(SignInContext);
 
 	const signIn = async () => {
 		try {
 			setIsSignInInProgress(true);
 			await GoogleSignin.hasPlayServices();
 			const userInfo = await GoogleSignin.signIn();
-			console.log(userInfo);
+			await signInToBackEnd(userInfo.idToken);
 			setIsSignInInProgress(false);
 			if (setIsSignedIn) {
 				setIsSignedIn(true);
@@ -31,6 +49,9 @@ const GoogleSignIn = (props) => {
 			if (setIsSignedIn) {
 				setIsSignedIn(false);
 			}
+		}
+		if (props.afterSignIn) {
+			props.afterSignIn();
 		}
 	};
 

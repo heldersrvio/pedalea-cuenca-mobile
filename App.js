@@ -49,7 +49,7 @@ export default function App() {
 
 	return (
 		<NavigationContainer>
-			<SignInContext.Provider value={setIsSignedIn}>
+			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn, }}>
 				<Drawer.Navigator
 					drawerType="front"
 					initialRouteName="Navegación"

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Map from '../Map';
 import MapLegend from '../MapLegend';
 import RouteInput from '../RouteInput';
+import SignInModal from '../modals/SignInModal';
 
 const CITY_LIMITS = {
 	northEast: {
@@ -15,10 +16,11 @@ const CITY_LIMITS = {
 	},
 };
 
-const Navigation = () => {
+const Navigation = (props) => {
 	const [route, setRoute] = useState(null);
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [destination, setDestination] = useState(null);
+	const [isSignInModalVisible, setIsSignInModalVisible] = useState(false);
 
 	return (
 		<View style={styles.container}>
@@ -35,8 +37,12 @@ const Navigation = () => {
 				handleRoute={setRoute}
 				setStartingPoint={setStartingPoint}
 				setDestination={setDestination}
+				enableSignInModal={() => {
+					setIsSignInModalVisible(true);
+				}}
 			/>
 			{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
+			<SignInModal modalVisible={isSignInModalVisible} setModalVisible={setIsSignInModalVisible} />
 		</View>
 	);
 };

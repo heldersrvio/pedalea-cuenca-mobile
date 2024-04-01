@@ -5,7 +5,7 @@ import GoogleSignIn from '../GoogleSignIn';
 const SignIn = (props) => {
 	return (
 		<View style={styles.container}>
-			<GoogleSignIn setIsSignedIn={props.setIsSignedIn} />
+			<GoogleSignIn />
 		</View>
 	);
 };
