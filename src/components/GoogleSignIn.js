@@ -27,6 +27,7 @@ const signInToBackEnd = async (idToken) => {
 	});
 	const json = await response.json();
 	await SecureStore.setItemAsync('login_token', json.token);
+	await SecureStore.setItemAsync('user_id', json.userId);
 };
 
 const GoogleSignIn = (props) => {

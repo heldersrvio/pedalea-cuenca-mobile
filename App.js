@@ -12,10 +12,11 @@ import MenuItems from './src/MenuItems';
 import { Ionicons } from '@expo/vector-icons';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import SignInContext from './src/contexts/SignInContext';
+import { withIAPContext } from 'react-native-iap';
 
 const Drawer = createDrawerNavigator();
 
-export default function App() {
+const App = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 
 	const signOut = async () => {
@@ -100,3 +101,5 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 });
+
+export default withIAPContext(App);

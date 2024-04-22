@@ -34,10 +34,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-google-services.json
 *.plist
 android
 ios
 .idea
-app.json
 .env
