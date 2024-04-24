@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Config from 'react-native-config';
 import SignInContext from '../contexts/SignInContext';
 import * as SecureStore from 'expo-secure-store';
 
@@ -76,7 +75,7 @@ const GooglePlacesInput = (props) => {
 			currentLocationLabel={'Ubicación actual'}
 			nearbyPlacesAPI={'None'}
 			query={{
-				key: Config.GOOGLE_PLACES_API_KEY,
+				key: process.env.GOOGLE_PLACES_API_KEY,
 				language: 'en',
 				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`,
 			}}

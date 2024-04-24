@@ -4,7 +4,6 @@ import {
 	GoogleSignin,
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
-import Config from 'react-native-config';
 import * as SecureStore from 'expo-secure-store';
 
 GoogleSignin.configure({
@@ -14,7 +13,7 @@ GoogleSignin.configure({
 });
 
 const signInToBackEnd = async (idToken) => {
-	const url = new URL(`${Config.API_URL}/signin`);
+	const url = new URL(`${process.env.API_URL}/signin`);
 	const response = await fetch(url, {
 		method: 'POST',
 		headers: {
