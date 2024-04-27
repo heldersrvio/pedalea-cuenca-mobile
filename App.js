@@ -50,7 +50,7 @@ const App = () => {
 
 	return (
 		<NavigationContainer>
-			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn, }}>
+			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
 				<Drawer.Navigator
 					drawerType="front"
 					initialRouteName="Navegación"
@@ -91,7 +91,7 @@ const App = () => {
 			</SignInContext.Provider>
 		</NavigationContainer>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {

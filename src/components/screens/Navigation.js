@@ -42,7 +42,10 @@ const Navigation = (props) => {
 				}}
 			/>
 			{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
-			<SignInModal modalVisible={isSignInModalVisible} setModalVisible={setIsSignInModalVisible} />
+			<SignInModal
+				modalVisible={isSignInModalVisible}
+				setModalVisible={setIsSignInModalVisible}
+			/>
 		</View>
 	);
 };

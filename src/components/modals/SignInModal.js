@@ -16,7 +16,9 @@ const SignInModal = (props) => {
 				<View style={styles.modalView}>
 					<Text>Entra con tu cuenta Google</Text>
 					<Text>{'\n'}</Text>
-					<GoogleSignIn afterSignIn={() => props.setModalVisible(false)} />
+					<GoogleSignIn
+						afterSignIn={() => props.setModalVisible(false)}
+					/>
 				</View>
 			</View>
 		</Modal>
@@ -25,17 +27,17 @@ const SignInModal = (props) => {
 
 const styles = StyleSheet.create({
 	centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-    	margin: 20,
-    	padding: 15,
-    	alignItems: 'center',
-    	backgroundColor: 'white',
-    },
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 22,
+	},
+	modalView: {
+		margin: 20,
+		padding: 15,
+		alignItems: 'center',
+		backgroundColor: 'white',
+	},
 });
 
 export default SignInModal;

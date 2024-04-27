@@ -94,7 +94,13 @@ const RouteInput = (props) => {
 	useEffect(() => {
 		if (sLat && sLon && dLat && dLon) {
 			if (isSignedIn) {
-				getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
+				getRouteForCoordinates(
+					sLat,
+					sLon,
+					dLat,
+					dLon,
+					props.handleRoute,
+				);
 			} else {
 				if (props.enableSignInModal) {
 					props.enableSignInModal();
