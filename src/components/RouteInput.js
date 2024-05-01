@@ -8,7 +8,7 @@ navigator.geolocation = require('@react-native-community/geolocation');
 
 const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 	try {
-		const url = new URL(`${Config.API_URL}/routing`);
+		const url = new URL(`${process.env.API_URL}/routing`);
 		const params = {
 			startingLat: sLat,
 			startingLon: sLon,

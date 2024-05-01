@@ -1,0 +1,54 @@
+{
+	"project_info": {
+		"project_number": "117342559706",
+		"project_id": "ciclo-cuenca-1709858633051",
+		"storage_bucket": "ciclo-cuenca-1709858633051.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:117342559706:android:34a84e0daf62d2ba9174e3",
+				"android_client_info": {
+					"package_name": "org.serviosoftware.ciclocuenca"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "117342559706-fr9mo13uae3hdk9sk21f2js0thi9lop1.apps.googleusercontent.com",
+					"client_type": 1,
+					"android_info": {
+						"package_name": "org.serviosoftware.ciclocuenca",
+						"certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+					}
+				},
+				{
+					"client_id": "117342559706-5a2u1ttjbvmedh7q7ke265qf9267s2e6.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyDeEAhRhcaNjrqWd14crU_kuV59-xIhYyc"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "117342559706-5a2u1ttjbvmedh7q7ke265qf9267s2e6.apps.googleusercontent.com",
+							"client_type": 3
+						},
+						{
+							"client_id": "117342559706-qf3i7nkdbhqrjd9kqotccuoafjnk1c3k.apps.googleusercontent.com",
+							"client_type": 2,
+							"ios_info": {
+								"bundle_id": "org.serviosoftware.ciclocuenca"
+							}
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
+}
