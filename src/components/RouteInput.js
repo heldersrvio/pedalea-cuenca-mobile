@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import SignInContext from '../contexts/SignInContext';
 import * as SecureStore from 'expo-secure-store';
+import * as Location from 'expo-location';
 
-navigator.geolocation = require('@react-native-community/geolocation');
+Location.installWebGeolocationPolyfill();
 
 const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 	try {
@@ -62,6 +63,7 @@ const GooglePlacesInput = (props) => {
 				},
 			}}
 			enablePoweredByContainer={false}
+			enableHighAccuracyLocation={true}
 			placeholder={props.placeholder}
 			onPress={(_data, details = null) => {
 				const location = details?.geometry?.location;
@@ -89,6 +91,7 @@ const RouteInput = (props) => {
 	const [sLon, setSLon] = useState(null);
 	const [dLat, setDLat] = useState(null);
 	const [dLon, setDLon] = useState(null);
+	const [locationStatus, requestPermission] = Location.useForegroundPermissions();
 	const { isSignedIn } = useContext(SignInContext);
 
 	useEffect(() => {
@@ -127,6 +130,15 @@ const RouteInput = (props) => {
 		}
 	}, [sLat, sLon]);
 
+	useEffect(() => {
+		const checkLocationPermission = async () => {
+			if (locationStatus === null) {
+				await requestPermission();
+			}
+		};
+		checkLocationPermission();
+	}, [locationStatus]);
+
 	return (
 		<View className="route-input" style={props.style}>
 			<GooglePlacesInput
@@ -136,7 +148,7 @@ const RouteInput = (props) => {
 				placeholder="Punto de partida"
 				minLength={5}
 				cityLimits={props.cityLimits}
-				currentLocation={true}
+				currentLocation={locationStatus?.granted === true}
 			/>
 			<GooglePlacesInput
 				style={styles.input}

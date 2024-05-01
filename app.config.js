@@ -19,7 +19,10 @@ module.exports = {
 			bundleIdentifier: "org.serviosoftware.ciclocuenca",
 			config: {
 				usesNonExemptEncryption: false
-			}
+			},
+			infoPlist: {
+				"NSLocationWhenInUseUsageDescription": "Esta aplicación utiliza tu ubicación para crear rutas desde ahí."
+			},
 		},
 		plugins: [
 			"@react-native-google-signin/google-signin",
@@ -34,7 +37,15 @@ module.exports = {
 			],
 			"expo-secure-store",
 			"./src/plugins/withAndroidStrategies.js",
-			"./src/plugins/withSupportLibVersion.js"
+			"./src/plugins/withSupportLibVersion.js",
+			[
+				"expo-location",
+				{
+				  "locationWhenInUsePermission": "Esta aplicación utiliza tu ubicación para crear rutas desde ahí.",
+				  "isAndroidForegroundServiceEnabled": true,
+				  "withBlockedPermission": ["ACCESS_COARSE_LOCATION"]
+				}
+			]
 		],
 		android: {
 			adaptiveIcon: {
@@ -49,7 +60,7 @@ module.exports = {
 				},
 			},
 			versionCode: 1,
-			permissions: ["com.android.vending.BILLING"]
+			permissions: ["com.android.vending.BILLING", "android.permission.ACCESS_FINE_LOCATION"]
 		},
 		owner: "heldersrvio",
 		extra: {
