@@ -8,6 +8,7 @@ const Account = (_props) => {
 	const TELEPHONE = '0958879836';
 
 	const [isSubscriptionActive, setIsSubscriptionActive] = useState(null);
+	const [hasSubscription, setHasSubscription] = useState(null);
 	const [hasPurchased, setHasPurchased] = useState(false);
 
 	const pollAfterPurchase = async (triesRemaining = 5) => {
@@ -18,7 +19,8 @@ const Account = (_props) => {
 			return;
 		}
 		await new Promise((resolve) => setTimeout(resolve, 3_000));
-		const status = await getUserSubscriptionStatus();
+		const { status, exists } = await getUserSubscriptionStatus();
+		setHasSubscription(exists);
 		if (!status) {
 			await pollAfterPurchase(triesRemaining - 1);
 		}
@@ -43,7 +45,11 @@ const Account = (_props) => {
 		});
 		const json = await response.json();
 		setIsSubscriptionActive(json.isSubscriptionActive);
-		return json.isSubscriptionActive;
+		setHasSubscription(!!json.googlePurchaseToken);
+		return {
+			status: json.isSubscriptionActive,
+			exists: !!json.googlePurchaseToken,
+		};
 	};
 
 	useEffect(() => {
@@ -68,14 +74,14 @@ const Account = (_props) => {
 					</Text>
 				)
 			) : null}
-			{isSubscriptionActive === false && !hasPurchased ? (
+			{isSubscriptionActive === false && !hasPurchased && !hasSubscription ? (
 				<Text>{'\n'}</Text>
 			) : null}
-			{isSubscriptionActive === false && !hasPurchased ? (
+			{isSubscriptionActive === false && !hasPurchased && !hasSubscription ? (
 				<Subscription onFinalizeTransaction={pollAfterPurchase} />
 			) : null}
 			<Text>{'\n'}</Text>
-			<Text>
+			{hasSubscription ? <Text>
 				Maneja la suscripción en{' '}
 				{Platform.OS === 'ios' ? null : (
 					<Text style={styles.strong}>
@@ -84,7 +90,7 @@ const Account = (_props) => {
 					</Text>
 				)}
 				.
-			</Text>
+			</Text> : null}
 		</View>
 	);
 };
