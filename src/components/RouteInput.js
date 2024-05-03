@@ -4,6 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import SignInContext from '../contexts/SignInContext';
 import * as SecureStore from 'expo-secure-store';
 import * as Location from 'expo-location';
+import { signInSilently } from './SignInUtils';
 
 Location.installWebGeolocationPolyfill();
 
@@ -92,7 +93,7 @@ const RouteInput = (props) => {
 	const [dLat, setDLat] = useState(null);
 	const [dLon, setDLon] = useState(null);
 	const [locationStatus, requestPermission] = Location.useForegroundPermissions();
-	const { isSignedIn } = useContext(SignInContext);
+	const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
 
 	useEffect(() => {
 		if (sLat && sLon && dLat && dLon) {
@@ -138,6 +139,15 @@ const RouteInput = (props) => {
 		};
 		checkLocationPermission();
 	}, [locationStatus]);
+
+	useEffect(() => {
+		const logIn = async () => {
+			if (!isSignedIn) {
+            	await signInSilently(setIsSignedIn);
+            }
+		};
+		logIn();
+	}, []);
 
 	return (
 		<View className="route-input" style={props.style}>
