@@ -3,6 +3,10 @@ import {
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from 'jwt-decode';
+import { decode } from 'base-64';
+
+global.atob = decode;
 
 GoogleSignin.configure({
 	webClientId:
@@ -29,6 +33,15 @@ const signInToBackEnd = async (idToken) => {
 
 export const signIn = async (setIsSignInInProgress, setIsSignedIn, afterSignIn = null) => {
 	try {
+		if (await validateToken()) {
+			if (setIsSignedIn) {
+				setIsSignedIn(true);
+			}
+			if (afterSignIn) {
+				afterSignIn();
+			}
+			return;
+		}
 		setIsSignInInProgress(true);
 		await GoogleSignin.hasPlayServices();
 		const userInfo = await GoogleSignin.signIn({ showPlayServicesUpdateDialog: true });
@@ -51,6 +64,15 @@ export const signIn = async (setIsSignInInProgress, setIsSignedIn, afterSignIn =
 
 export const signInSilently = async (setIsSignedIn, afterSignIn = null) => {
 	try {
+		if (await validateToken()) {
+			if (setIsSignedIn) {
+				setIsSignedIn(true);
+			}
+			if (afterSignIn) {
+				afterSignIn();
+			}
+			return;
+		}
 		const userInfo = await GoogleSignin.signInSilently();
 		await signInToBackEnd(userInfo.idToken);
 		if (setIsSignedIn) {
@@ -65,4 +87,17 @@ export const signInSilently = async (setIsSignedIn, afterSignIn = null) => {
 	if (afterSignIn) {
 		afterSignIn();
 	}
+};
+
+export const validateToken = async () => {
+	const token = await SecureStore.getItemAsync('login_token');
+	if (!token) {
+		return false;
+	}
+	const decodedToken = jwtDecode(token);
+	if (decodedToken.expiration * 1_000 < (new Date()).getTime() + 300) {
+		return false;
+	}
+	console.log('Found token');
+	return true;
 };

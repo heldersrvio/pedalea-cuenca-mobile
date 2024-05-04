@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import SignInContext from './src/contexts/SignInContext';
 import { withIAPContext } from 'react-native-iap';
+import * as SecureStore from 'expo-secure-store';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,6 +23,7 @@ const App = () => {
 	const signOut = async () => {
 		try {
 			await GoogleSignin.signOut();
+			await SecureStore.deleteItemAsync('login_token');
 			setIsSignedIn(false);
 		} catch (error) {
 			console.log(error.message);
