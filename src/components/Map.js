@@ -19,13 +19,23 @@ const Map = (props) => {
 
 	const mapBoundaries = props.cityLimits;
 
-	useEffect(() => {
+	const resetBoundaries = () => {
 		if (mapRef.current) {
 			mapRef.current.setMapBoundaries(
 				mapBoundaries.northEast,
 				mapBoundaries.southWest,
 			);
+			mapRef.current.animateToRegion({
+				latitude: -2.8959756,
+				longitude: -79.0041711,
+				latitudeDelta: LATITUDE_DELTA,
+				longitudeDelta: LONGITUDE_DELTA,
+			});
 		}
+	};
+
+	useEffect(() => {
+		resetBoundaries();
 	}, []);
 
 	useEffect(() => {
@@ -117,12 +127,11 @@ const Map = (props) => {
 					return ac;
 				}, []),
 			);
+		} else {
+			setRoute([]);
+			resetBoundaries();
 		}
 	}, [props.route]);
-
-	//	useEffect(() => {
-	//		console.log(coordinates);
-	//	}, [coordinates]);
 
 	return (
 		<MapView
