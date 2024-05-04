@@ -74,23 +74,29 @@ const Account = (_props) => {
 					</Text>
 				)
 			) : null}
-			{isSubscriptionActive === false && !hasPurchased && !hasSubscription ? (
+			{isSubscriptionActive === false &&
+			!hasPurchased &&
+			!hasSubscription ? (
 				<Text>{'\n'}</Text>
 			) : null}
-			{isSubscriptionActive === false && !hasPurchased && !hasSubscription ? (
+			{isSubscriptionActive === false &&
+			!hasPurchased &&
+			!hasSubscription ? (
 				<Subscription onFinalizeTransaction={pollAfterPurchase} />
 			) : null}
 			<Text>{'\n'}</Text>
-			{hasSubscription ? <Text>
-				Maneja la suscripción en{' '}
-				{Platform.OS === 'ios' ? null : (
-					<Text style={styles.strong}>
-						Google Play > [ícono de cuenta] > Pagos y suscripciones
-						> Suscripciones
-					</Text>
-				)}
-				.
-			</Text> : null}
+			{hasSubscription ? (
+				<Text>
+					Maneja la suscripción en{' '}
+					{Platform.OS === 'ios' ? null : (
+						<Text style={styles.strong}>
+							Google Play > [ícono de cuenta] > Pagos y
+							suscripciones > Suscripciones
+						</Text>
+					)}
+					.
+				</Text>
+			) : null}
 		</View>
 	);
 };

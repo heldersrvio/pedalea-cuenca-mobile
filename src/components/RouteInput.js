@@ -95,7 +95,8 @@ const RouteInput = (props) => {
 	const [dLon, setDLon] = useState(null);
 	const startingRef = useRef(null);
 	const destinationRef = useRef(null);
-	const [locationStatus, requestPermission] = Location.useForegroundPermissions();
+	const [locationStatus, requestPermission] =
+		Location.useForegroundPermissions();
 	const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
 
 	useEffect(() => {
@@ -146,8 +147,8 @@ const RouteInput = (props) => {
 	useEffect(() => {
 		const logIn = async () => {
 			if (!isSignedIn) {
-            	await signInSilently(setIsSignedIn);
-            }
+				await signInSilently(setIsSignedIn);
+			}
 		};
 		logIn();
 	}, []);
@@ -164,13 +165,7 @@ const RouteInput = (props) => {
 			startingRef.current?.setAddressText('');
 			destinationRef.current?.setAddressText('');
 		} else if (sLat && sLon && dLat && dLon) {
-			getRouteForCoordinates(
-				sLat,
-				sLon,
-				dLat,
-				dLon,
-				props.handleRoute,
-			);
+			getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
 		}
 	}, [isSignedIn]);
 

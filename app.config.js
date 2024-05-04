@@ -1,72 +1,77 @@
 module.exports = {
 	expo: {
-		name: "ciclo-cuenca-mobile",
-		slug: "ciclocuenca",
-		version: "1.0.0",
-		orientation: "portrait",
-		icon: "./assets/icon.png",
-		userInterfaceStyle: "light",
+		name: 'ciclo-cuenca-mobile',
+		slug: 'ciclocuenca',
+		version: '1.0.0',
+		orientation: 'portrait',
+		icon: './assets/icon.png',
+		userInterfaceStyle: 'light',
 		splash: {
-			image: "./assets/splash.png",
-			resizeMode: "contain",
-			backgroundColor: "#ffffff"
+			image: './assets/splash.png',
+			resizeMode: 'contain',
+			backgroundColor: '#ffffff',
 		},
-		platforms: ["android", "ios"],
-		assetBundlePatterns: ["**/*"],
+		platforms: ['android', 'ios'],
+		assetBundlePatterns: ['**/*'],
 		ios: {
 			supportsTablet: false,
-			googleServicesFile: "./GoogleService-Info.plist",
-			bundleIdentifier: "org.serviosoftware.ciclocuenca",
+			googleServicesFile: './GoogleService-Info.plist',
+			bundleIdentifier: 'org.serviosoftware.ciclocuenca',
 			config: {
-				usesNonExemptEncryption: false
+				usesNonExemptEncryption: false,
 			},
 			infoPlist: {
-				"NSLocationWhenInUseUsageDescription": "Esta aplicación utiliza tu ubicación para crear rutas desde ahí."
+				NSLocationWhenInUseUsageDescription:
+					'Esta aplicación utiliza tu ubicación para crear rutas desde ahí.',
 			},
 		},
 		plugins: [
-			"@react-native-google-signin/google-signin",
+			'@react-native-google-signin/google-signin',
 			[
-				"react-native-permissions",
+				'react-native-permissions',
 				{
 					iosPermissions: [
-						"LocationWhenInUse",
-						"LocationAlwaysAndWhenInUse"
-					]
-				}
+						'LocationWhenInUse',
+						'LocationAlwaysAndWhenInUse',
+					],
+				},
 			],
-			"expo-secure-store",
-			"./src/plugins/withAndroidStrategies.js",
-			"./src/plugins/withSupportLibVersion.js",
+			'expo-secure-store',
+			'./src/plugins/withAndroidStrategies.js',
+			'./src/plugins/withSupportLibVersion.js',
 			[
-				"expo-location",
+				'expo-location',
 				{
-				  "locationWhenInUsePermission": "Esta aplicación utiliza tu ubicación para crear rutas desde ahí.",
-				  "isAndroidForegroundServiceEnabled": true,
-				  "withBlockedPermission": ["ACCESS_COARSE_LOCATION"]
-				}
-			]
+					locationWhenInUsePermission:
+						'Esta aplicación utiliza tu ubicación para crear rutas desde ahí.',
+					isAndroidForegroundServiceEnabled: true,
+					withBlockedPermission: ['ACCESS_COARSE_LOCATION'],
+				},
+			],
 		],
 		android: {
 			adaptiveIcon: {
-				foregroundImage: "./assets/adaptive-icon.png",
-				backgroundColor: "#ffffff"
+				foregroundImage: './assets/adaptive-icon.png',
+				backgroundColor: '#ffffff',
 			},
-			googleServicesFile: "./google-services.json",
-			package: "org.serviosoftware.ciclocuenca",
+			googleServicesFile: './google-services.json',
+			package: 'org.serviosoftware.ciclocuenca',
 			config: {
 				googleMaps: {
 					apiKey: process.env.GOOGLE_MAPS_API_KEY,
 				},
 			},
 			versionCode: 1,
-			permissions: ["com.android.vending.BILLING", "android.permission.ACCESS_FINE_LOCATION"]
+			permissions: [
+				'com.android.vending.BILLING',
+				'android.permission.ACCESS_FINE_LOCATION',
+			],
 		},
-		owner: "heldersrvio",
+		owner: 'heldersrvio',
 		extra: {
 			eas: {
-				projectId: "4426fa95-b03a-4eb0-b5fe-bb78810e9613"
-			}
-		}
-	}
+				projectId: '4426fa95-b03a-4eb0-b5fe-bb78810e9613',
+			},
+		},
+	},
 };

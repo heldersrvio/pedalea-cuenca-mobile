@@ -31,7 +31,11 @@ const signInToBackEnd = async (idToken) => {
 	await SecureStore.setItemAsync('user_id', json.userId);
 };
 
-export const signIn = async (setIsSignInInProgress, setIsSignedIn, afterSignIn = null) => {
+export const signIn = async (
+	setIsSignInInProgress,
+	setIsSignedIn,
+	afterSignIn = null,
+) => {
 	try {
 		if (await validateToken()) {
 			if (setIsSignedIn) {
@@ -44,7 +48,9 @@ export const signIn = async (setIsSignInInProgress, setIsSignedIn, afterSignIn =
 		}
 		setIsSignInInProgress(true);
 		await GoogleSignin.hasPlayServices();
-		const userInfo = await GoogleSignin.signIn({ showPlayServicesUpdateDialog: true });
+		const userInfo = await GoogleSignin.signIn({
+			showPlayServicesUpdateDialog: true,
+		});
 		await signInToBackEnd(userInfo.idToken);
 		setIsSignInInProgress(false);
 		if (setIsSignedIn) {
@@ -95,7 +101,7 @@ export const validateToken = async () => {
 		return false;
 	}
 	const decodedToken = jwtDecode(token);
-	if (decodedToken.expiration * 1_000 < (new Date()).getTime() + 300) {
+	if (decodedToken.expiration * 1_000 < new Date().getTime() + 300) {
 		return false;
 	}
 	console.log('Found token');
