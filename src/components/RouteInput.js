@@ -33,7 +33,9 @@ const getRouteForCoordinates = async (sLat, sLon, dLat, dLon, handleRoute) => {
 			},
 		});
 		const json = await response.json();
-		handleRoute(json);
+		if (!json.error) {
+			handleRoute(json);
+		}
 	} catch (err) {
 		console.log(err);
 	}

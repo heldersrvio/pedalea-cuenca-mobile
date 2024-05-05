@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Platform, StyleSheet, View, Text } from 'react-native';
+import SignInContext from '../../contexts/SignInContext';
 import Subscription from '../Subscription';
+import { signInSilently } from '../SignInUtils';
 import * as SecureStore from 'expo-secure-store';
 
 const Account = (_props) => {
@@ -10,6 +12,7 @@ const Account = (_props) => {
 	const [isSubscriptionActive, setIsSubscriptionActive] = useState(null);
 	const [hasSubscription, setHasSubscription] = useState(null);
 	const [hasPurchased, setHasPurchased] = useState(false);
+	const { setIsSignedIn } = useContext(SignInContext);
 
 	const pollAfterPurchase = async (triesRemaining = 5) => {
 		if (triesRemaining === 5) {
@@ -23,6 +26,8 @@ const Account = (_props) => {
 		setHasSubscription(exists);
 		if (!status) {
 			await pollAfterPurchase(triesRemaining - 1);
+		} else {
+			await signInSilently(setIsSignedIn, null, true);
 		}
 	};
 

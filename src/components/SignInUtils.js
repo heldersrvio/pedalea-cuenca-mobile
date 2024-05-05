@@ -68,9 +68,9 @@ export const signIn = async (
 	}
 };
 
-export const signInSilently = async (setIsSignedIn, afterSignIn = null) => {
+export const signInSilently = async (setIsSignedIn, afterSignIn = null, force = false) => {
 	try {
-		if (await validateToken()) {
+		if (!force && (await validateToken())) {
 			if (setIsSignedIn) {
 				setIsSignedIn(true);
 			}
