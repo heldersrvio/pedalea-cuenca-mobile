@@ -86,7 +86,7 @@ export const signInSilently = async (setIsSignedIn, afterSignIn = null, force = 
 		}
 	} catch (error) {
 		console.log(error.message);
-		if (setIsSignedIn) {
+		if (setIsSignedIn && !force) {
 			setIsSignedIn(false);
 		}
 	}
@@ -104,6 +104,14 @@ export const validateToken = async () => {
 	if (decodedToken.expiration * 1_000 < new Date().getTime() + 300) {
 		return false;
 	}
-	console.log('Found token');
 	return true;
+};
+
+export const verifySubscription = async () => {
+	const token = await SecureStore.getItemAsync('login_token');
+	if (!token) {
+		return false;
+	}
+	const decodedToken = jwtDecode(token);
+	return decodedToken.isSubscriptionActive;
 };

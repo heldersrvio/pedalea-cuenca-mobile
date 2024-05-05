@@ -4,6 +4,7 @@ import Map from '../Map';
 import MapLegend from '../MapLegend';
 import RouteInput from '../RouteInput';
 import SignInModal from '../modals/SignInModal';
+import SubscribeModal from '../modals/SubscribeModal';
 
 const CITY_LIMITS = {
 	northEast: {
@@ -21,6 +22,7 @@ const Navigation = (props) => {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [destination, setDestination] = useState(null);
 	const [isSignInModalVisible, setIsSignInModalVisible] = useState(false);
+	const [isSubscribeModalVisible, setIsSubscribeModalVisible] = useState(false);
 
 	return (
 		<View style={styles.container}>
@@ -40,11 +42,18 @@ const Navigation = (props) => {
 				enableSignInModal={() => {
 					setIsSignInModalVisible(true);
 				}}
+				enableSubscribeModal={() => {
+					setIsSubscribeModalVisible(true);
+				}}
 			/>
 			{route !== null ? <MapLegend style={styles.mapLegend} /> : null}
 			<SignInModal
 				modalVisible={isSignInModalVisible}
 				setModalVisible={setIsSignInModalVisible}
+			/>
+			<SubscribeModal
+				modalVisible={isSubscribeModalVisible}
+				setModalVisible={setIsSubscribeModalVisible}
 			/>
 		</View>
 	);

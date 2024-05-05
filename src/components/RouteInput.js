@@ -4,7 +4,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import SignInContext from '../contexts/SignInContext';
 import * as SecureStore from 'expo-secure-store';
 import * as Location from 'expo-location';
-import { signInSilently } from './SignInUtils';
+import { signInSilently, verifySubscription } from './SignInUtils';
 
 Location.installWebGeolocationPolyfill();
 
@@ -101,9 +101,18 @@ const RouteInput = (props) => {
 		Location.useForegroundPermissions();
 	const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
 
-	useEffect(() => {
-		if (sLat && sLon && dLat && dLon) {
-			if (isSignedIn) {
+	const handleCoordinatesIfSignedIn = async () => {
+		if (await verifySubscription()) {
+			getRouteForCoordinates(
+				sLat,
+				sLon,
+				dLat,
+				dLon,
+				props.handleRoute,
+			);
+		} else {
+			await signInSilently(setIsSignedIn, null, true);
+			if (await verifySubscription()) {
 				getRouteForCoordinates(
 					sLat,
 					sLon,
@@ -111,12 +120,26 @@ const RouteInput = (props) => {
 					dLon,
 					props.handleRoute,
 				);
-			} else {
-				if (props.enableSignInModal) {
-					props.enableSignInModal();
-				}
+			} else if (props.enableSubscribeModal) {
+				props.enableSubscribeModal();
 			}
 		}
+	};
+
+	useEffect(() => {
+		const handleCoordinates = async () => {
+			if (sLat && sLon && dLat && dLon) {
+				if (isSignedIn) {
+					await handleCoordinatesIfSignedIn();
+				} else {
+					if (props.enableSignInModal) {
+						props.enableSignInModal();
+					}
+				}
+			}
+		};
+
+		handleCoordinates();
 	}, [sLat, sLon, dLat, dLon]);
 
 	useEffect(() => {
@@ -167,7 +190,7 @@ const RouteInput = (props) => {
 			startingRef.current?.setAddressText('');
 			destinationRef.current?.setAddressText('');
 		} else if (sLat && sLon && dLat && dLon) {
-			getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
+			handleCoordinatesIfSignedIn();
 		}
 	}, [isSignedIn]);
 

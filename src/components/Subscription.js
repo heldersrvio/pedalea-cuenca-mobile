@@ -98,11 +98,14 @@ const Subscription = (props) => {
 			console.log('Subscription error');
 			console.log(error);
 		}
+		if (props.afterSubscribe) {
+			props.afterSubscribe();
+		}
 	};
 
 	return (
 		<Button
-			title="Suscríbete"
+			title={props.label ? props.label : 'Suscríbete'}
 			onPress={() => subscribe()}
 			style={styles.button}
 		/>
