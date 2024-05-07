@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Button, StyleSheet, Text } from 'react-native';
+import SignInContext from '../contexts/SignInContext';
+import SubscriptionContext from '../contexts/SubscriptionContext';
 import {
 	useIAP,
 	requestSubscription,
 	flushFailedPurchasesCachedAsPendingAndroid,
 } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
+import { signInSilently } from './SignInUtils';
 
 const androidSubscriptionId = 'basic_1';
 
@@ -33,6 +36,30 @@ const setUserPurchaseToken = async (purchaseToken) => {
 	console.log(json);
 };
 
+const getUserSubscriptionStatus = async () => {
+	const authToken = await SecureStore.getItemAsync('login_token');
+	const userId = await SecureStore.getItemAsync('user_id');
+	if (!userId) {
+		console.log('No user id found');
+		return;
+	}
+
+	const url = new URL(`${process.env.API_URL}/users/${userId}`);
+	const response = await fetch(url, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${authToken}`,
+		},
+	});
+	const json = await response.json();
+	return {
+		status: json.isSubscriptionActive,
+		exists: !!json.googlePurchaseToken,
+	};
+};
+
 const Subscription = (props) => {
 	const {
 		connected,
@@ -42,6 +69,28 @@ const Subscription = (props) => {
 		finishTransaction,
 		getSubscriptions,
 	} = useIAP();
+	const { setIsSignedIn } = useContext(SignInContext);
+	const { setIsSubscribed, setHasSubscription } = useContext(SubscriptionContext);
+
+	const pollAfterPurchase = async (triesRemaining = 5, setHasPurchased = null) => {
+    	if (triesRemaining === 5) {
+    		if (setHasPurchased) {
+    			setHasPurchased(true);
+    		}
+    	}
+    	if (triesRemaining === 0) {
+    		return;
+    	}
+    	await new Promise((resolve) => setTimeout(resolve, 3_000));
+    	const { status, exists } = await getUserSubscriptionStatus();
+    	setIsSubscribed(status === true);
+    	setHasSubscription(exists === true);
+    	if (!status) {
+    		await pollAfterPurchase(triesRemaining - 1);
+    	} else {
+    		await signInSilently(setIsSignedIn, null, true);
+    	}
+    };
 
 	useEffect(() => {
 		const fetchSubscriptions = async () => {
@@ -57,6 +106,9 @@ const Subscription = (props) => {
 	useEffect(() => {
 		const handleFinishPurchase = async () => {
 			if (currentPurchase && !currentPurchaseError) {
+				if (props.whenSubscribe) {
+                	props.whenSubscribe();
+                }
 				const purchaseToken = currentPurchase.dataAndroid
 					? JSON.parse(currentPurchase.dataAndroid)?.purchaseToken
 					: null;
@@ -69,8 +121,9 @@ const Subscription = (props) => {
 					purchase: currentPurchase,
 					isConsumable: false,
 				});
-				if (props.onFinalizeTransaction) {
-					await props.onFinalizeTransaction();
+				await pollAfterPurchase(5, props.setHasPurchased);
+				if (props.afterSubscribe) {
+					props.afterSubscribe();
 				}
 			}
 		};
@@ -97,9 +150,6 @@ const Subscription = (props) => {
 		} catch (error) {
 			console.log('Subscription error');
 			console.log(error);
-		}
-		if (props.afterSubscribe) {
-			props.afterSubscribe();
 		}
 	};
 

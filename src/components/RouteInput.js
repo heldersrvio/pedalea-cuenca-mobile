@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import SignInContext from '../contexts/SignInContext';
+import SubscriptionContext from '../contexts/SubscriptionContext';
 import * as SecureStore from 'expo-secure-store';
 import * as Location from 'expo-location';
 import { signInSilently, verifySubscription } from './SignInUtils';
@@ -100,6 +101,7 @@ const RouteInput = (props) => {
 	const [locationStatus, requestPermission] =
 		Location.useForegroundPermissions();
 	const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
+	const { isSubscribed } = useContext(SubscriptionContext);
 
 	const handleCoordinatesIfSignedIn = async () => {
 		if (await verifySubscription()) {
@@ -192,7 +194,7 @@ const RouteInput = (props) => {
 		} else if (sLat && sLon && dLat && dLon) {
 			handleCoordinatesIfSignedIn();
 		}
-	}, [isSignedIn]);
+	}, [isSignedIn, isSubscribed]);
 
 	return (
 		<View className="route-input" style={props.style}>

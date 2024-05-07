@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Platform, StyleSheet, View, Text } from 'react-native';
 import SignInContext from '../../contexts/SignInContext';
+import SubscriptionContext from '../../contexts/SubscriptionContext';
 import Subscription from '../Subscription';
 import { signInSilently } from '../SignInUtils';
 import * as SecureStore from 'expo-secure-store';
@@ -9,27 +10,9 @@ const Account = (_props) => {
 	const EMAIL_ADDRESS = 'ciclorrutas_cuenca@gmail.com';
 	const TELEPHONE = '0958879836';
 
-	const [isSubscriptionActive, setIsSubscriptionActive] = useState(null);
-	const [hasSubscription, setHasSubscription] = useState(null);
 	const [hasPurchased, setHasPurchased] = useState(false);
 	const { setIsSignedIn } = useContext(SignInContext);
-
-	const pollAfterPurchase = async (triesRemaining = 5) => {
-		if (triesRemaining === 5) {
-			setHasPurchased(true);
-		}
-		if (triesRemaining === 0) {
-			return;
-		}
-		await new Promise((resolve) => setTimeout(resolve, 3_000));
-		const { status, exists } = await getUserSubscriptionStatus();
-		setHasSubscription(exists);
-		if (!status) {
-			await pollAfterPurchase(triesRemaining - 1);
-		} else {
-			await signInSilently(setIsSignedIn, null, true);
-		}
-	};
+	const { isSubscribed, hasSubscription, setIsSubscribed, setHasSubscription } = useContext(SubscriptionContext);
 
 	const getUserSubscriptionStatus = async () => {
 		const authToken = await SecureStore.getItemAsync('login_token');
@@ -49,7 +32,7 @@ const Account = (_props) => {
 			},
 		});
 		const json = await response.json();
-		setIsSubscriptionActive(json.isSubscriptionActive);
+		setIsSubscribed(json.isSubscriptionActive === true);
 		setHasSubscription(!!json.googlePurchaseToken);
 		return {
 			status: json.isSubscriptionActive,
@@ -63,14 +46,14 @@ const Account = (_props) => {
 
 	return (
 		<View style={styles.container}>
-			{isSubscriptionActive !== null &&
-			isSubscriptionActive !== undefined ? (
-				!isSubscriptionActive && hasPurchased ? (
+			{isSubscribed !== null &&
+			isSubscribed !== undefined ? (
+				!isSubscribed && hasPurchased ? (
 					<Text>Estamos procesando tu suscripción.</Text>
 				) : (
 					<Text>
 						Tu suscripción se encuentra{' '}
-						{isSubscriptionActive ? (
+						{isSubscribed ? (
 							<Text style={styles.activeStatus}>activa</Text>
 						) : (
 							<Text style={styles.inactiveStatus}>inactiva</Text>
@@ -79,15 +62,15 @@ const Account = (_props) => {
 					</Text>
 				)
 			) : null}
-			{isSubscriptionActive === false &&
+			{isSubscribed === false &&
 			!hasPurchased &&
 			!hasSubscription ? (
 				<Text>{'\n'}</Text>
 			) : null}
-			{isSubscriptionActive === false &&
+			{isSubscribed === false &&
 			!hasPurchased &&
 			!hasSubscription ? (
-				<Subscription onFinalizeTransaction={pollAfterPurchase} />
+				<Subscription setHasPurchased={setHasPurchased} />
 			) : null}
 			<Text>{'\n'}</Text>
 			{hasSubscription ? (

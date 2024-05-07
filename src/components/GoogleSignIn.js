@@ -9,13 +9,19 @@ const GoogleSignIn = (props) => {
 
 	return (
 		<GoogleSigninButton
-			onPress={async () =>
+			onPress={async () => {
+				setIsSignInInProgress(true);
 				await signIn(
 					setIsSignInInProgress,
 					setIsSignedIn,
-					props.afterSignIn,
+					() => {
+						setIsSignInInProgress(false);
+						if (props.afterSignIn) {
+							props.afterSignIn();
+						}
+					},
 				)
-			}
+			}}
 			disabled={isSignInInProgress}
 		/>
 	);

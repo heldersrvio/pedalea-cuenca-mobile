@@ -12,6 +12,7 @@ import MenuItems from './src/MenuItems';
 import { Ionicons } from '@expo/vector-icons';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import SignInContext from './src/contexts/SignInContext';
+import SubscriptionContext from './src/contexts/SubscriptionContext';
 import { withIAPContext } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
 
@@ -19,6 +20,8 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
+	const [isSubscribed, setIsSubscribed] = useState(false);
+	const [hasSubscription, setHasSubscription] = useState(false);
 
 	const signOut = async () => {
 		try {
@@ -53,43 +56,45 @@ const App = () => {
 	return (
 		<NavigationContainer>
 			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
-				<Drawer.Navigator
-					drawerType="front"
-					initialRouteName="Navegación"
-					drawerContent={CustomDrawerContent}
-				>
-					{MenuItems.map((drawer) => {
-						if (
-							(drawer.needsLogIn && isSignedIn) ||
-							(drawer.needsLogOut && !isSignedIn) ||
-							(!drawer.needsLogIn && !drawer.needsLogOut)
-						) {
-							return (
-								<Drawer.Screen
-									key={drawer.name}
-									name={drawer.name}
-									options={{
-										drawerIcon: () => (
-											<Ionicons
-												name={drawer.iconName}
-												size={24}
-												color="black"
+				<SubscriptionContext.Provider value={{ isSubscribed, setIsSubscribed, hasSubscription, setHasSubscription }}>
+					<Drawer.Navigator
+						drawerType="front"
+						initialRouteName="Navegación"
+						drawerContent={CustomDrawerContent}
+					>
+						{MenuItems.map((drawer) => {
+							if (
+								(drawer.needsLogIn && isSignedIn) ||
+								(drawer.needsLogOut && !isSignedIn) ||
+								(!drawer.needsLogIn && !drawer.needsLogOut)
+							) {
+								return (
+									<Drawer.Screen
+										key={drawer.name}
+										name={drawer.name}
+										options={{
+											drawerIcon: () => (
+												<Ionicons
+													name={drawer.iconName}
+													size={24}
+													color="black"
+												/>
+											),
+										}}
+										component={drawer.component}
+										drawerContent={(props) => (
+											<CustomDrawerContent
+												{...props}
+												signOut={signOut}
 											/>
-										),
-									}}
-									component={drawer.component}
-									drawerContent={(props) => (
-										<CustomDrawerContent
-											{...props}
-											signOut={signOut}
-										/>
-									)}
-								/>
-							);
-						}
-						return null;
-					})}
-				</Drawer.Navigator>
+										)}
+									/>
+								);
+							}
+							return null;
+						})}
+					</Drawer.Navigator>
+				</SubscriptionContext.Provider>
 			</SignInContext.Provider>
 		</NavigationContainer>
 	);

@@ -1,11 +1,13 @@
-import React from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, ActivityIndicator, Text, View } from 'react-native';
 import Subscription from '../Subscription';
 
 const FREE_TRIAL_DAYS = 4;
 const PRICE = 4.15;
 
 const SubscribeModal = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
+
 	return (
 		<Modal
 			animationType="slide"
@@ -16,11 +18,20 @@ const SubscribeModal = (props) => {
 			}}
 		>
 			<View style={styles.centeredView}>
-				<View style={styles.modalView}>
-					<Subscription label={`Intenta grátis por ${FREE_TRIAL_DAYS} días`} afterSubscribe={() => props.setModalVisible(false)} />
+				{isLoading ?
+					<View style={styles.modalView}>
+						<ActivityIndicator size="large" />
+					</View> :
+				 <View style={styles.modalView}>
+					<Subscription label={`Intenta grátis por ${FREE_TRIAL_DAYS} días`} whenSubscribe={() => setIsLoading(true)} afterSubscribe={() => {
+						props.setModalVisible(false);
+						if (props.updateCurrentRoute) {
+							props.updateCurrentRoute();
+						}
+					}} />
 					<Text>{'\n'}</Text>
 					<Text>Y después, <Text style={styles.price}>${PRICE}</Text> mensuales. Cancelas cuando quieras.</Text>
-				</View>
+				</View>}
 			</View>
 		</Modal>
 	);
