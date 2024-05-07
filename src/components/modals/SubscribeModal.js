@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, StyleSheet, ActivityIndicator, Text, View } from 'react-native';
 import Subscription from '../Subscription';
+import SubscriptionContext from '../../contexts/SubscriptionContext';
 
 const FREE_TRIAL_DAYS = 4;
 const PRICE = 4.15;
 
 const SubscribeModal = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const { hasSubscription, isSubscriptionActive } = useContext(SubscriptionContext);
 
 	return (
 		<Modal
@@ -22,6 +24,11 @@ const SubscribeModal = (props) => {
 					<View style={styles.modalView}>
 						<ActivityIndicator size="large" />
 					</View> :
+				hasSubscription && !isSubscriptionActive ?
+					<View style={styles.modalView}>
+						<Text>Tu subscrición se encuentra pausada. Ve a Google Play para manejarla.</Text>
+					</View>
+				:
 				 <View style={styles.modalView}>
 					<Subscription label={`Intenta grátis por ${FREE_TRIAL_DAYS} días`} whenSubscribe={() => setIsLoading(true)} afterSubscribe={() => {
 						props.setModalVisible(false);

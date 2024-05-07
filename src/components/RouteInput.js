@@ -101,10 +101,10 @@ const RouteInput = (props) => {
 	const [locationStatus, requestPermission] =
 		Location.useForegroundPermissions();
 	const { isSignedIn, setIsSignedIn } = useContext(SignInContext);
-	const { isSubscribed } = useContext(SubscriptionContext);
+	const { isSubscribed, setHasSubscription } = useContext(SubscriptionContext);
 
 	const handleCoordinatesIfSignedIn = async () => {
-		if (await verifySubscription()) {
+		if (await verifySubscription(null, setHasSubscription)) {
 			getRouteForCoordinates(
 				sLat,
 				sLon,
@@ -114,7 +114,7 @@ const RouteInput = (props) => {
 			);
 		} else {
 			await signInSilently(setIsSignedIn, null, true);
-			if (await verifySubscription()) {
+			if (await verifySubscription(null, setHasSubscription)) {
 				getRouteForCoordinates(
 					sLat,
 					sLon,

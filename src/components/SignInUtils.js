@@ -107,11 +107,19 @@ export const validateToken = async () => {
 	return true;
 };
 
-export const verifySubscription = async () => {
+export const verifySubscription = async (setIsSubscribed = null, setHasSubscription = null) => {
 	const token = await SecureStore.getItemAsync('login_token');
 	if (!token) {
 		return false;
 	}
 	const decodedToken = jwtDecode(token);
+	if (setIsSubscribed) {
+		setIsSubscribed(decodedToken.isSubscriptionActive === true);
+	}
+	if (setHasSubscription) {
+		console.log(decodedToken);
+		console.log(decodedToken.googlePurchaseToken);
+		setHasSubscription(!!decodedToken.googlePurchaseToken);
+	}
 	return decodedToken.isSubscriptionActive;
 };
