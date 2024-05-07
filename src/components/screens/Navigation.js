@@ -72,12 +72,11 @@ const styles = StyleSheet.create({
 	},
 	map: {
 		position: 'absolute',
-		top: 0,
 		left: 0,
 		right: 0,
 		bottom: 0,
 		width: '100%',
-		height: '100%',
+		height: '80%',
 	},
 	routeInput: {
 		position: 'absolute',
@@ -91,6 +90,8 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: '#ff2e16',
 		padding: 13,
+		minHeight: 135,
+		height: '20%',
 	},
 	mapLegend: {
 		position: 'absolute',

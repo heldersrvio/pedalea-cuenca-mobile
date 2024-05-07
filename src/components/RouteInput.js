@@ -198,26 +198,33 @@ const RouteInput = (props) => {
 
 	return (
 		<View className="route-input" style={props.style}>
-			<GooglePlacesInput
-				autocompleteRef={startingRef}
-				style={styles.input}
-				setLat={setSLat}
-				setLon={setSLon}
-				placeholder="Punto de partida"
-				minLength={5}
-				cityLimits={props.cityLimits}
-				currentLocation={locationStatus?.granted === true}
-			/>
-			<GooglePlacesInput
-				autocompleteRef={destinationRef}
-				style={styles.input}
-				setLat={setDLat}
-				setLon={setDLon}
-				placeholder="Destinación"
-				minLength={5}
-				cityLimits={props.cityLimits}
-				currentLocation={false}
-			/>
+			<View style={{
+				...styles.inputContainer,
+				zIndex: styles.inputContainer.zIndex + 100,
+			}}>
+				<GooglePlacesInput
+					autocompleteRef={startingRef}
+					style={styles.input}
+					setLat={setSLat}
+					setLon={setSLon}
+					placeholder="Punto de partida"
+					minLength={5}
+					cityLimits={props.cityLimits}
+					currentLocation={locationStatus?.granted === true}
+				/>
+			</View>
+			<View style={styles.inputContainer}>
+				<GooglePlacesInput
+					autocompleteRef={destinationRef}
+					style={styles.input}
+					setLat={setDLat}
+					setLon={setDLon}
+					placeholder="Destinación"
+					minLength={5}
+					cityLimits={props.cityLimits}
+					currentLocation={false}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -225,6 +232,11 @@ const RouteInput = (props) => {
 const styles = StyleSheet.create({
 	input: {
 		position: 'relative',
+	},
+	inputContainer: {
+		zIndex: 1000,
+		height: '50%',
+		width: '100%',
 	},
 });
 
