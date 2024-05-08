@@ -20,22 +20,9 @@ module.exports = {
 			config: {
 				usesNonExemptEncryption: false,
 			},
-			infoPlist: {
-				NSLocationWhenInUseUsageDescription:
-					'Esta aplicación utiliza tu ubicación para crear rutas desde ahí.',
-			},
 		},
 		plugins: [
 			'@react-native-google-signin/google-signin',
-			[
-				'react-native-permissions',
-				{
-					iosPermissions: [
-						'LocationWhenInUse',
-						'LocationAlwaysAndWhenInUse',
-					],
-				},
-			],
 			'expo-secure-store',
 			'./src/plugins/withAndroidStrategies.js',
 			'./src/plugins/withSupportLibVersion.js',
