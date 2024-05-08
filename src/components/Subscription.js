@@ -185,6 +185,8 @@ const Subscription = (props) => {
 						],
 					}),
 				});
+			} else {
+				console.log('No subscription found');
 			}
 		} catch (error) {
 			console.log('Subscription error');
