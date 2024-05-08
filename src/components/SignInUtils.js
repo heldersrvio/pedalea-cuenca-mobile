@@ -113,13 +113,12 @@ export const verifySubscription = async (setIsSubscribed = null, setHasSubscript
 		return false;
 	}
 	const decodedToken = jwtDecode(token);
+	console.log(decodedToken);
 	if (setIsSubscribed) {
 		setIsSubscribed(decodedToken.isSubscriptionActive === true);
 	}
 	if (setHasSubscription) {
-		console.log(decodedToken);
-		console.log(decodedToken.googlePurchaseToken);
-		setHasSubscription(!!decodedToken.googlePurchaseToken);
+		setHasSubscription(!!decodedToken.googlePurchaseToken || !!decodedToken.appleAppAccountToken);
 	}
 	return decodedToken.isSubscriptionActive;
 };

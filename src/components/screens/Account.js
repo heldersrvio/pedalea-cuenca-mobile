@@ -33,10 +33,10 @@ const Account = (_props) => {
 		});
 		const json = await response.json();
 		setIsSubscribed(json.isSubscriptionActive === true);
-		setHasSubscription(!!json.googlePurchaseToken);
+		setHasSubscription(!!json.googlePurchaseToken || !!json.appleAppAccountToken);
 		return {
 			status: json.isSubscriptionActive,
-			exists: !!json.googlePurchaseToken,
+			exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
 		};
 	};
 

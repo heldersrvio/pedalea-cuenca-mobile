@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { Button, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Button, StyleSheet, Text, Platform } from 'react-native';
 import SignInContext from '../contexts/SignInContext';
 import SubscriptionContext from '../contexts/SubscriptionContext';
 import {
@@ -9,8 +9,10 @@ import {
 } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
 import { signInSilently } from './SignInUtils';
+import uuid from 'react-native-uuid';
 
 const androidSubscriptionId = 'basic_1';
+const iosSubscriptionId = 'basic_1';
 
 const setUserPurchaseToken = async (purchaseToken) => {
 	const authToken = await SecureStore.getItemAsync('login_token');
@@ -30,6 +32,30 @@ const setUserPurchaseToken = async (purchaseToken) => {
 		},
 		body: JSON.stringify({
 			googlePurchaseToken: purchaseToken,
+		}),
+	});
+	const json = await response.json();
+	console.log(json);
+};
+
+const setUserAppAccountToken = async (appAccountToken) => {
+	const authToken = await SecureStore.getItemAsync('login_token');
+	const userId = await SecureStore.getItemAsync('user_id');
+	if (!userId) {
+		console.log('No user id found');
+		return;
+	}
+
+	const url = new URL(`${process.env.API_URL}/users/${userId}`);
+	const response = await fetch(url, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${authToken}`,
+		},
+		body: JSON.stringify({
+			appleAppAccountToken: appAccountToken,
 		}),
 	});
 	const json = await response.json();
@@ -56,7 +82,7 @@ const getUserSubscriptionStatus = async () => {
 	const json = await response.json();
 	return {
 		status: json.isSubscriptionActive,
-		exists: !!json.googlePurchaseToken,
+		exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
 	};
 };
 
@@ -71,6 +97,7 @@ const Subscription = (props) => {
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
 	const { setIsSubscribed, setHasSubscription } = useContext(SubscriptionContext);
+	const [appAccountToken, setAppAccountToken] = useState(null);
 
 	const pollAfterPurchase = async (triesRemaining = 5, setHasPurchased = null) => {
     	if (triesRemaining === 5) {
@@ -95,7 +122,7 @@ const Subscription = (props) => {
 	useEffect(() => {
 		const fetchSubscriptions = async () => {
 			await getSubscriptions({
-				skus: [androidSubscriptionId],
+				skus: [androidSubscriptionId, iosSubscriptionId],
 			});
 		};
 
@@ -109,14 +136,22 @@ const Subscription = (props) => {
 				if (props.whenSubscribe) {
                 	props.whenSubscribe();
                 }
-				const purchaseToken = currentPurchase.dataAndroid
-					? JSON.parse(currentPurchase.dataAndroid)?.purchaseToken
-					: null;
-				if (purchaseToken) {
-					await setUserPurchaseToken(purchaseToken);
-				} else {
-					console.log('No purchase token in Android');
-				}
+                if (Platform.OS === 'android') {
+                	const purchaseToken = currentPurchase.dataAndroid
+						? JSON.parse(currentPurchase.dataAndroid)?.purchaseToken
+						: null;
+					if (purchaseToken) {
+						await setUserPurchaseToken(purchaseToken);
+					} else {
+						console.log('No purchase token in Android');
+					}
+                } else {
+                	if (appAccountToken) {
+                		await setUserAppAccountToken(appAccountToken);
+                	} else {
+                		console.log('No app account token in iOS');
+                	}
+                }
 				await finishTransaction({
 					purchase: currentPurchase,
 					isConsumable: false,
@@ -138,8 +173,12 @@ const Subscription = (props) => {
 				const offerToken =
 					subscription?.subscriptionOfferDetails?.[0]?.offerToken;
 
+				const uuid = Platform.OS === 'ios' ? uuid.v4() : null;
+				setAppAccountToken(uuid);
+
 				await requestSubscription({
 					sku: subscription.productId,
+					appAccountToken: uuid,
 					...(offerToken && {
 						subscriptionOffers: [
 							{ sku: subscription.productId, offerToken },
