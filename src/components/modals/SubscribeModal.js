@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Modal, StyleSheet, ActivityIndicator, Text, View } from 'react-native';
+import { Modal, StyleSheet, ActivityIndicator, Text, View, Platform } from 'react-native';
 import Subscription from '../Subscription';
 import SubscriptionContext from '../../contexts/SubscriptionContext';
 
 const FREE_TRIAL_DAYS = 4;
-const PRICE = 4.15;
+const PRICE_ANDROID = 4.15;
+const PRICE_IOS = 4.15;
 
 const SubscribeModal = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,7 @@ const SubscribeModal = (props) => {
 						}
 					}} />
 					<Text>{'\n'}</Text>
-					<Text>Y después, <Text style={styles.price}>${PRICE}</Text> mensuales. Cancelas cuando quieras.</Text>
+					<Text>Y después, <Text style={styles.price}>${Platform.OS === 'ios' ? PRICE_IOS : PRICE_ANDROID}</Text> mensuales. Cancelas cuando quieras.</Text>
 				</View>}
 			</View>
 		</Modal>
