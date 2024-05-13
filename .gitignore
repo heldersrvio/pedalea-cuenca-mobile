@@ -34,7 +34,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-*.plist
 android
 ios
 .idea
