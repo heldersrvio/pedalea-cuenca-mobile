@@ -16,7 +16,12 @@
 			"android": {
 				"buildType": "apk"
 			},
-			"developmentClient": true
+			"distribution": "internal",
+			"env": {
+				"API_URL": "https://api.pedaleacuenca.com",
+				"GOOGLE_PLACES_API_KEY": "AIzaSyDEF9pK2UAgycwTIJAkd6F9XvYDE0Lp8OQ",
+				"GOOGLE_MAPS_API_KEY": "AIzaSyDeEAhRhcaNjrqWd14crU_kuV59-xIhYyc"
+			}
 		},
 		"production": {
 			"env": {
