@@ -39,3 +39,4 @@ ios
 .idea
 .env
 *.aab
+*.ipa
