@@ -22,7 +22,8 @@ const Navigation = (props) => {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [destination, setDestination] = useState(null);
 	const [isSignInModalVisible, setIsSignInModalVisible] = useState(false);
-	const [isSubscribeModalVisible, setIsSubscribeModalVisible] = useState(false);
+	const [isSubscribeModalVisible, setIsSubscribeModalVisible] =
+		useState(false);
 
 	return (
 		<View style={styles.container}>

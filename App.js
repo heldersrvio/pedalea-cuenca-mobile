@@ -56,7 +56,14 @@ const App = () => {
 	return (
 		<NavigationContainer>
 			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
-				<SubscriptionContext.Provider value={{ isSubscribed, setIsSubscribed, hasSubscription, setHasSubscription }}>
+				<SubscriptionContext.Provider
+					value={{
+						isSubscribed,
+						setIsSubscribed,
+						hasSubscription,
+						setHasSubscription,
+					}}
+				>
 					<Drawer.Navigator
 						drawerType="front"
 						initialRouteName="Navegación"

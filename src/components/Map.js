@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 import MapView, {
 	Polyline,
 	Marker,
-	PROVIDER_DEFAULT,
+	PROVIDER_GOOGLE,
 	MAP_TYPES,
 } from 'react-native-maps';
 
@@ -142,7 +142,7 @@ const Map = (props) => {
 				latitudeDelta: LATITUDE_DELTA,
 				longitudeDelta: LONGITUDE_DELTA,
 			}}
-			provider={PROVIDER_DEFAULT}
+			provider={PROVIDER_GOOGLE}
 			mapType={MAP_TYPES.STANDARD}
 			showsUserLocation={true}
 			showsMyLocationButton={true}

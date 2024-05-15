@@ -19,6 +19,7 @@ module.exports = {
 			bundleIdentifier: 'org.serviosoftware.ciclocuenca',
 			config: {
 				usesNonExemptEncryption: false,
+				googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
 			},
 		},
 		plugins: [

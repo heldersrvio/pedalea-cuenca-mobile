@@ -9,10 +9,10 @@ import {
 } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
 import { signInSilently } from './SignInUtils';
-import uuid from 'react-native-uuid';
+import * as Crypto from 'expo-crypto';
 
 const androidSubscriptionId = 'basic_1';
-const iosSubscriptionId = 'basic_1';
+const iosSubscriptionId = 'app_subscription_1';
 
 const setUserPurchaseToken = async (purchaseToken) => {
 	const authToken = await SecureStore.getItemAsync('login_token');
@@ -96,28 +96,32 @@ const Subscription = (props) => {
 		getSubscriptions,
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
-	const { setIsSubscribed, setHasSubscription } = useContext(SubscriptionContext);
+	const { setIsSubscribed, setHasSubscription } =
+		useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
 
-	const pollAfterPurchase = async (triesRemaining = 5, setHasPurchased = null) => {
-    	if (triesRemaining === 5) {
-    		if (setHasPurchased) {
-    			setHasPurchased(true);
-    		}
-    	}
-    	if (triesRemaining === 0) {
-    		return;
-    	}
-    	await new Promise((resolve) => setTimeout(resolve, 3_000));
-    	const { status, exists } = await getUserSubscriptionStatus();
-    	setIsSubscribed(status === true);
-    	setHasSubscription(exists === true);
-    	if (!status) {
-    		await pollAfterPurchase(triesRemaining - 1);
-    	} else {
-    		await signInSilently(setIsSignedIn, null, true);
-    	}
-    };
+	const pollAfterPurchase = async (
+		triesRemaining = 5,
+		setHasPurchased = null,
+	) => {
+		if (triesRemaining === 5) {
+			if (setHasPurchased) {
+				setHasPurchased(true);
+			}
+		}
+		if (triesRemaining === 0) {
+			return;
+		}
+		await new Promise((resolve) => setTimeout(resolve, 3_000));
+		const { status, exists } = await getUserSubscriptionStatus();
+		setIsSubscribed(status === true);
+		setHasSubscription(exists === true);
+		if (!status) {
+			await pollAfterPurchase(triesRemaining - 1);
+		} else {
+			await signInSilently(setIsSignedIn, null, true);
+		}
+	};
 
 	useEffect(() => {
 		const fetchSubscriptions = async () => {
@@ -126,7 +130,9 @@ const Subscription = (props) => {
 			});
 		};
 
-		flushFailedPurchasesCachedAsPendingAndroid();
+		if (Platform.OS === 'android') {
+			flushFailedPurchasesCachedAsPendingAndroid();
+		}
 		fetchSubscriptions();
 	}, []);
 
@@ -134,10 +140,10 @@ const Subscription = (props) => {
 		const handleFinishPurchase = async () => {
 			if (currentPurchase && !currentPurchaseError) {
 				if (props.whenSubscribe) {
-                	props.whenSubscribe();
-                }
-                if (Platform.OS === 'android') {
-                	const purchaseToken = currentPurchase.dataAndroid
+					props.whenSubscribe();
+				}
+				if (Platform.OS === 'android') {
+					const purchaseToken = currentPurchase.dataAndroid
 						? JSON.parse(currentPurchase.dataAndroid)?.purchaseToken
 						: null;
 					if (purchaseToken) {
@@ -145,13 +151,13 @@ const Subscription = (props) => {
 					} else {
 						console.log('No purchase token in Android');
 					}
-                } else {
-                	if (appAccountToken) {
-                		await setUserAppAccountToken(appAccountToken);
-                	} else {
-                		console.log('No app account token in iOS');
-                	}
-                }
+				} else {
+					if (appAccountToken) {
+						await setUserAppAccountToken(appAccountToken);
+					} else {
+						console.log('No app account token in iOS');
+					}
+				}
 				await finishTransaction({
 					purchase: currentPurchase,
 					isConsumable: false,
@@ -173,9 +179,8 @@ const Subscription = (props) => {
 				const offerToken =
 					subscription?.subscriptionOfferDetails?.[0]?.offerToken;
 
-				const uuid = Platform.OS === 'ios' ? uuid.v4() : null;
+				const uuid = Crypto.randomUUID();
 				setAppAccountToken(uuid);
-
 				await requestSubscription({
 					sku: subscription.productId,
 					appAccountToken: uuid,
@@ -197,7 +202,7 @@ const Subscription = (props) => {
 	return (
 		<Button
 			title={props.label ? props.label : 'Suscríbete'}
-			onPress={() => subscribe()}
+			onPress={subscribe}
 			style={styles.button}
 		/>
 	);

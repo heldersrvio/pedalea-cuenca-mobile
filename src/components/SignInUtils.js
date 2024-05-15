@@ -68,7 +68,11 @@ export const signIn = async (
 	}
 };
 
-export const signInSilently = async (setIsSignedIn, afterSignIn = null, force = false) => {
+export const signInSilently = async (
+	setIsSignedIn,
+	afterSignIn = null,
+	force = false,
+) => {
 	try {
 		if (!force && (await validateToken())) {
 			if (setIsSignedIn) {
@@ -107,7 +111,10 @@ export const validateToken = async () => {
 	return true;
 };
 
-export const verifySubscription = async (setIsSubscribed = null, setHasSubscription = null) => {
+export const verifySubscription = async (
+	setIsSubscribed = null,
+	setHasSubscription = null,
+) => {
 	const token = await SecureStore.getItemAsync('login_token');
 	if (!token) {
 		return false;
@@ -118,7 +125,10 @@ export const verifySubscription = async (setIsSubscribed = null, setHasSubscript
 		setIsSubscribed(decodedToken.isSubscriptionActive === true);
 	}
 	if (setHasSubscription) {
-		setHasSubscription(!!decodedToken.googlePurchaseToken || !!decodedToken.appleAppAccountToken);
+		setHasSubscription(
+			!!decodedToken.googlePurchaseToken ||
+				!!decodedToken.appleAppAccountToken,
+		);
 	}
 	return decodedToken.isSubscriptionActive;
 };

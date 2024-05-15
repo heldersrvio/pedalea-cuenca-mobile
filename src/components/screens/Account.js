@@ -12,7 +12,12 @@ const Account = (_props) => {
 
 	const [hasPurchased, setHasPurchased] = useState(false);
 	const { setIsSignedIn } = useContext(SignInContext);
-	const { isSubscribed, hasSubscription, setIsSubscribed, setHasSubscription } = useContext(SubscriptionContext);
+	const {
+		isSubscribed,
+		hasSubscription,
+		setIsSubscribed,
+		setHasSubscription,
+	} = useContext(SubscriptionContext);
 
 	const getUserSubscriptionStatus = async () => {
 		const authToken = await SecureStore.getItemAsync('login_token');
@@ -33,7 +38,9 @@ const Account = (_props) => {
 		});
 		const json = await response.json();
 		setIsSubscribed(json.isSubscriptionActive === true);
-		setHasSubscription(!!json.googlePurchaseToken || !!json.appleAppAccountToken);
+		setHasSubscription(
+			!!json.googlePurchaseToken || !!json.appleAppAccountToken,
+		);
 		return {
 			status: json.isSubscriptionActive,
 			exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
@@ -46,8 +53,7 @@ const Account = (_props) => {
 
 	return (
 		<View style={styles.container}>
-			{isSubscribed !== null &&
-			isSubscribed !== undefined ? (
+			{isSubscribed !== null && isSubscribed !== undefined ? (
 				!isSubscribed && hasPurchased ? (
 					<Text>Estamos procesando tu suscripción.</Text>
 				) : (
@@ -62,14 +68,10 @@ const Account = (_props) => {
 					</Text>
 				)
 			) : null}
-			{isSubscribed === false &&
-			!hasPurchased &&
-			!hasSubscription ? (
+			{isSubscribed === false && !hasPurchased && !hasSubscription ? (
 				<Text>{'\n'}</Text>
 			) : null}
-			{isSubscribed === false &&
-			!hasPurchased &&
-			!hasSubscription ? (
+			{isSubscribed === false && !hasPurchased && !hasSubscription ? (
 				<Subscription setHasPurchased={setHasPurchased} />
 			) : null}
 			<Text>{'\n'}</Text>
