@@ -78,7 +78,11 @@ const Account = (_props) => {
 			{hasSubscription ? (
 				<Text>
 					Maneja la suscripción en{' '}
-					{Platform.OS === 'ios' ? null : (
+					{Platform.OS === 'ios' ? (
+						<Text style={styles.strong}>
+							Configuración > [tu nombre] > Suscripciones
+						</Text>
+					) : (
 						<Text style={styles.strong}>
 							Google Play > [ícono de cuenta] > Pagos y
 							suscripciones > Suscripciones

@@ -100,7 +100,8 @@ const Subscription = (props) => {
 	const { setIsSubscribed, setHasSubscription } =
 		useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
-	const [hasRequestedSubscription, setHasRequestedSubscription] = useState(false);
+	const [hasRequestedSubscription, setHasRequestedSubscription] =
+		useState(false);
 
 	const pollAfterPurchase = async (
 		triesRemaining = 5,
@@ -142,7 +143,11 @@ const Subscription = (props) => {
 
 	useEffect(() => {
 		const handleFinishPurchase = async () => {
-			if (hasRequestedSubscription && currentPurchase && !currentPurchaseError) {
+			if (
+				hasRequestedSubscription &&
+				currentPurchase &&
+				!currentPurchaseError
+			) {
 				if (props.whenSubscribe) {
 					props.whenSubscribe();
 				}
