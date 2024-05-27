@@ -6,6 +6,7 @@ import {
 	useIAP,
 	requestSubscription,
 	flushFailedPurchasesCachedAsPendingAndroid,
+	clearTransactionIOS,
 } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
 import { signInSilently } from './SignInUtils';
@@ -99,6 +100,7 @@ const Subscription = (props) => {
 	const { setIsSubscribed, setHasSubscription } =
 		useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
+	const [hasRequestedSubscription, setHasRequestedSubscription] = useState(false);
 
 	const pollAfterPurchase = async (
 		triesRemaining = 5,
@@ -124,21 +126,23 @@ const Subscription = (props) => {
 	};
 
 	useEffect(() => {
-		const fetchSubscriptions = async () => {
+		const clearCacheAndFetchSubscriptions = async () => {
+			if (Platform.OS === 'android') {
+				await flushFailedPurchasesCachedAsPendingAndroid();
+			} else {
+				await clearTransactionIOS();
+			}
 			await getSubscriptions({
 				skus: [androidSubscriptionId, iosSubscriptionId],
 			});
 		};
 
-		if (Platform.OS === 'android') {
-			flushFailedPurchasesCachedAsPendingAndroid();
-		}
-		fetchSubscriptions();
+		clearCacheAndFetchSubscriptions();
 	}, []);
 
 	useEffect(() => {
 		const handleFinishPurchase = async () => {
-			if (currentPurchase && !currentPurchaseError) {
+			if (hasRequestedSubscription && currentPurchase && !currentPurchaseError) {
 				if (props.whenSubscribe) {
 					props.whenSubscribe();
 				}
@@ -174,6 +178,7 @@ const Subscription = (props) => {
 
 	const subscribe = async () => {
 		try {
+			setHasRequestedSubscription(true);
 			if (subscriptions && subscriptions?.[0]) {
 				const subscription = subscriptions[0];
 				const offerToken =
@@ -196,6 +201,7 @@ const Subscription = (props) => {
 		} catch (error) {
 			console.log('Subscription error');
 			console.log(error);
+			setHasRequestedSubscription(false);
 		}
 	};
 
