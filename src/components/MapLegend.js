@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 
 const MapLegend = () => {
 	return (
@@ -38,13 +38,21 @@ const styles = StyleSheet.create({
 		backgroundColor: '#0e2dff',
 		marginRight: 5,
 	},
-	noCycleLaneSymbol: {
-		width: 60,
-		borderStyle: 'dotted',
-		borderTopWidth: 5,
-		borderTopColor: '#ff9c0e',
-		marginRight: 5,
-	},
+	noCycleLaneSymbol:
+		Platform.OS === 'android'
+			? {
+					width: 60,
+					borderStyle: 'dotted',
+					borderTopWidth: 5,
+					borderTopColor: '#ff9c0e',
+					marginRight: 5,
+				}
+			: {
+					width: 60,
+					height: 4,
+					backgroundColor: '#ff9c0e',
+					marginRight: 5,
+				},
 	legendText: {
 		marginRight: 30,
 	},
