@@ -166,7 +166,7 @@ const Subscription = (props) => {
 					purchase: currentPurchase,
 					isConsumable: false,
 				});
-				await pollAfterPurchase(5, props.setHasPurchased);
+				await pollAfterPurchase(15, props.setHasPurchased);
 				if (props.afterSubscribe) {
 					props.afterSubscribe();
 				}
