@@ -22,6 +22,7 @@ const App = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [hasSubscription, setHasSubscription] = useState(false);
+	const [isFreeTrialAvailable, setIsFreeTrialAvailable] = useState(false);
 
 	const signOut = async () => {
 		try {
@@ -62,6 +63,8 @@ const App = () => {
 						setIsSubscribed,
 						hasSubscription,
 						setHasSubscription,
+						isFreeTrialAvailable,
+						setIsFreeTrialAvailable,
 					}}
 				>
 					<Drawer.Navigator

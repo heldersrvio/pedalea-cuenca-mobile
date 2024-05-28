@@ -10,13 +10,13 @@ import {
 import Subscription from '../Subscription';
 import SubscriptionContext from '../../contexts/SubscriptionContext';
 
-const FREE_TRIAL_DAYS = 4;
+const FREE_TRIAL_DAYS = 3;
 const PRICE_ANDROID = 4.15;
 const PRICE_IOS = 4.15;
 
 const SubscribeModal = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const { hasSubscription, isSubscriptionActive } =
+	const { hasSubscription, isSubscriptionActive, isFreeTrialAvailable } =
 		useContext(SubscriptionContext);
 
 	return (
@@ -43,7 +43,7 @@ const SubscribeModal = (props) => {
 				) : (
 					<View style={styles.modalView}>
 						<Subscription
-							label={`Intenta grátis por ${FREE_TRIAL_DAYS} días`}
+							label={isFreeTrialAvailable ? `Intenta grátis por ${FREE_TRIAL_DAYS} días` : 'Suscríbete'}
 							whenSubscribe={() => setIsLoading(true)}
 							afterSubscribe={() => {
 								props.setModalVisible(false);
@@ -54,7 +54,7 @@ const SubscribeModal = (props) => {
 						/>
 						<Text>{'\n'}</Text>
 						<Text>
-							Y después,{' '}
+							{isFreeTrialAvailable ? 'Y después, ' : ''}
 							<Text style={styles.price}>
 								$
 								{Platform.OS === 'ios'

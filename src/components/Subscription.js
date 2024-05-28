@@ -15,6 +15,8 @@ import * as Crypto from 'expo-crypto';
 const androidSubscriptionId = 'basic_1';
 const iosSubscriptionId = 'app_subscription_1';
 
+const FREE_TRIAL_DAYS = 3;
+
 const setUserPurchaseToken = async (purchaseToken) => {
 	const authToken = await SecureStore.getItemAsync('login_token');
 	const userId = await SecureStore.getItemAsync('user_id');
@@ -95,9 +97,11 @@ const Subscription = (props) => {
 		currentPurchaseError,
 		finishTransaction,
 		getSubscriptions,
+		purchaseHistory,
+		getPurchaseHistory,
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
-	const { setIsSubscribed, setHasSubscription } =
+	const { setIsSubscribed, setHasSubscription, isFreeTrialAvailable, setIsFreeTrialAvailable } =
 		useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
 	const [hasRequestedSubscription, setHasRequestedSubscription] =
@@ -133,6 +137,7 @@ const Subscription = (props) => {
 			} else {
 				await clearTransactionIOS();
 			}
+			await getPurchaseHistory();
 			await getSubscriptions({
 				skus: [androidSubscriptionId, iosSubscriptionId],
 			});
@@ -181,6 +186,21 @@ const Subscription = (props) => {
 		handleFinishPurchase();
 	}, [currentPurchase, currentPurchaseError]);
 
+	useEffect(() => {
+		if (subscriptions && subscriptions?.[0] && !isFreeTrialAvailable) {
+			const subscription = subscriptions[0];
+			const offerId = subscription?.subscriptionOfferDetails?.[0]?.offerId;
+
+			if (offerId) {
+				setIsFreeTrialAvailable(true);
+			} else {
+				if (Platform.OS === 'ios' && purchaseHistory && purchaseHistory?.length === 0) {
+					setIsFreeTrialAvailable(true);
+				}
+			}
+		}
+	}, [subscriptions, purchaseHistory]);
+
 	const subscribe = async () => {
 		try {
 			setHasRequestedSubscription(true);
@@ -212,7 +232,7 @@ const Subscription = (props) => {
 
 	return (
 		<Button
-			title={props.label ? props.label : 'Suscríbete'}
+			title={props.label ? props.label : isFreeTrialAvailable ? `Intenta grátis por ${FREE_TRIAL_DAYS} días` : 'Suscríbete'}
 			onPress={subscribe}
 			style={styles.button}
 		/>
