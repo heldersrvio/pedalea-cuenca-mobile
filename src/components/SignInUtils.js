@@ -9,8 +9,7 @@ import { decode } from 'base-64';
 global.atob = decode;
 
 GoogleSignin.configure({
-	webClientId:
-		'117342559706-5a2u1ttjbvmedh7q7ke265qf9267s2e6.apps.googleusercontent.com',
+	webClientId: '661290148924-pvghltcakmh4cb2oesp4mtlmtg2hqgvi.apps.googleusercontent.com',
 	offlineAccess: false,
 });
 
