@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Linking } from 'react-native';
 
 const Contact = (_props) => {
-	const EMAIL_ADDRESS = 'ciclorrutas_cuenca@gmail.com';
+	const EMAIL_ADDRESS = 'contacto@pedaleacuenca.com';
 	const TELEPHONE = '0958879836';
 
 	return (
