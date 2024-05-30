@@ -14,9 +14,8 @@
 		},
 		"preview": {
 			"android": {
-				"buildType": "apk"
+				"buildType": "app-bundle"
 			},
-			"distribution": "internal",
 			"env": {
 				"API_URL": "https://api.pedaleacuenca.com",
 				"GOOGLE_MAPS_API_KEY_ANDROID": "AIzaSyCnq1Exmx9j5Ujw1Q84hehcE3fcAmi_6P8",
@@ -32,6 +31,11 @@
 		}
 	},
 	"submit": {
-		"production": {}
+		"production": {},
+		"preview": {
+			"android": {
+				"track": "internal"
+			}
+		}
 	}
 }

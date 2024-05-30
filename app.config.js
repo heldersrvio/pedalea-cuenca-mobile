@@ -58,7 +58,7 @@ module.exports = {
 		owner: 'heldersrvio',
 		extra: {
 			eas: {
-				projectId: '4426fa95-b03a-4eb0-b5fe-bb78810e9613',
+				projectId: 'e23e570f-c7a6-4770-baf8-70e29be6de39',
 			},
 		},
 	},
