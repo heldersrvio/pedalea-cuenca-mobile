@@ -13,7 +13,7 @@ import { signInSilently } from './SignInUtils';
 import * as Crypto from 'expo-crypto';
 
 const androidSubscriptionId = 'basic_1';
-const iosSubscriptionId = 'app_subscription_1';
+const iosSubscriptionId = 'subscription_1';
 
 const FREE_TRIAL_DAYS = 3;
 
