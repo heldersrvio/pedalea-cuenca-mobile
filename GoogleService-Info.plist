@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>117342559706-2jnghoqjjteu7t6cpbc7oiv9mnt8ea3v.apps.googleusercontent.com</string>
+	<string>661290148924-qej32fvgqmt24q61fcr1tvnhblritaiu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.117342559706-2jnghoqjjteu7t6cpbc7oiv9mnt8ea3v</string>
+	<string>com.googleusercontent.apps.661290148924-qej32fvgqmt24q61fcr1tvnhblritaiu</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>117342559706-0aavmtkpnvb8jcsnsdu9frn2n2i27s06.apps.googleusercontent.com</string>
+	<string>661290148924-ajth80nu301lrr903vrceodjpmor12tt.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDyCB75WJHHPDfmMg0PPOSbJbd1mSNMlLY</string>
+	<string>AIzaSyCDeRAuvjohAMtBFuzwZNZbxGcw8-R2Dlk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>117342559706</string>
+	<string>661290148924</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.serviosoftware.ciclocuenca</string>
+	<string>org.serviosoftware.pedaleacuenca</string>
 	<key>PROJECT_ID</key>
-	<string>ciclo-cuenca-1709858633051</string>
+	<string>pedalea-cuenca</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ciclo-cuenca-1709858633051.appspot.com</string>
+	<string>pedalea-cuenca.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:117342559706:ios:20b9b513f9b198599174e3</string>
+	<string>1:661290148924:ios:bb6a8a9182ee70cca08f39</string>
 </dict>
 </plist>
