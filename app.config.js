@@ -1,7 +1,7 @@
 module.exports = {
 	expo: {
-		name: 'ciclo-cuenca-mobile',
-		slug: 'ciclocuenca',
+		name: 'Pedalea Cuenca',
+		slug: 'pedaleacuenca',
 		version: '1.0.0',
 		orientation: 'portrait',
 		icon: './assets/icon.png',
@@ -16,10 +16,10 @@ module.exports = {
 		ios: {
 			supportsTablet: false,
 			googleServicesFile: './GoogleService-Info.plist',
-			bundleIdentifier: 'org.serviosoftware.ciclocuenca',
+			bundleIdentifier: 'org.serviosoftware.pedaleacuenca',
 			config: {
 				usesNonExemptEncryption: false,
-				googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+				googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
 			},
 		},
 		plugins: [
@@ -43,10 +43,10 @@ module.exports = {
 				backgroundColor: '#ffffff',
 			},
 			googleServicesFile: './google-services.json',
-			package: 'org.serviosoftware.ciclocuenca',
+			package: 'org.serviosoftware.pedaleacuenca',
 			config: {
 				googleMaps: {
-					apiKey: process.env.GOOGLE_MAPS_API_KEY,
+					apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
 				},
 			},
 			versionCode: 1,
