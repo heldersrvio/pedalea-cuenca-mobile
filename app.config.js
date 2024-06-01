@@ -4,19 +4,19 @@ module.exports = {
 		slug: 'pedaleacuenca',
 		version: '1.0.0',
 		orientation: 'portrait',
-		icon: './assets/icon.png',
+		icon: './assets/images/icon.png',
 		userInterfaceStyle: 'light',
-		splash: {
-			image: './assets/splash.png',
-			resizeMode: 'contain',
-			backgroundColor: '#ffffff',
-		},
 		platforms: ['android', 'ios'],
 		assetBundlePatterns: ['**/*'],
 		ios: {
 			supportsTablet: false,
 			googleServicesFile: './GoogleService-Info.plist',
 			bundleIdentifier: 'org.serviosoftware.pedaleacuenca',
+			splash: {
+				image: './assets/images/splash_screen.png',
+				resizeMode: 'cover',
+				backgroundColor: '#000000'
+			},
 			config: {
 				usesNonExemptEncryption: false,
 				googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
@@ -39,8 +39,13 @@ module.exports = {
 		],
 		android: {
 			adaptiveIcon: {
-				foregroundImage: './assets/adaptive-icon.png',
+				foregroundImage: './assets/images/adaptive-icon.png',
 				backgroundColor: '#ffffff',
+			},
+			splash: {
+				image: './assets/images/splash_screen.png',
+				resizeMode: 'cover',
+				backgroundColor: '#000000'
 			},
 			googleServicesFile: './google-services.json',
 			package: 'org.serviosoftware.pedaleacuenca',
