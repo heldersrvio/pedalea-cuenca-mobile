@@ -101,8 +101,12 @@ const Subscription = (props) => {
 		getPurchaseHistory,
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
-	const { setIsSubscribed, setHasSubscription, isFreeTrialAvailable, setIsFreeTrialAvailable } =
-		useContext(SubscriptionContext);
+	const {
+		setIsSubscribed,
+		setHasSubscription,
+		isFreeTrialAvailable,
+		setIsFreeTrialAvailable,
+	} = useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
 	const [hasRequestedSubscription, setHasRequestedSubscription] =
 		useState(false);
@@ -189,12 +193,17 @@ const Subscription = (props) => {
 	useEffect(() => {
 		if (subscriptions && subscriptions?.[0] && !isFreeTrialAvailable) {
 			const subscription = subscriptions[0];
-			const offerId = subscription?.subscriptionOfferDetails?.[0]?.offerId;
+			const offerId =
+				subscription?.subscriptionOfferDetails?.[0]?.offerId;
 
 			if (offerId) {
 				setIsFreeTrialAvailable(true);
 			} else {
-				if (Platform.OS === 'ios' && purchaseHistory && purchaseHistory?.length === 0) {
+				if (
+					Platform.OS === 'ios' &&
+					purchaseHistory &&
+					purchaseHistory?.length === 0
+				) {
 					setIsFreeTrialAvailable(true);
 				}
 			}
@@ -232,7 +241,13 @@ const Subscription = (props) => {
 
 	return (
 		<Button
-			title={props.label ? props.label : isFreeTrialAvailable ? `Intenta grátis por ${FREE_TRIAL_DAYS} días` : 'Suscríbete'}
+			title={
+				props.label
+					? props.label
+					: isFreeTrialAvailable
+						? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
+						: 'Suscríbete'
+			}
 			onPress={subscribe}
 			style={styles.button}
 		/>

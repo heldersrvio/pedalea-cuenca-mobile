@@ -1,39 +1,39 @@
 {
-  "project_info": {
-    "project_number": "661290148924",
-    "project_id": "pedalea-cuenca",
-    "storage_bucket": "pedalea-cuenca.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:661290148924:android:e16bcf83128b6393a08f39",
-        "android_client_info": {
-          "package_name": "org.serviosoftware.pedaleacuenca"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "661290148924-pvghltcakmh4cb2oesp4mtlmtg2hqgvi.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB_OLw6A0hB7fPmwy27W0BWbueDoTWmmlg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "661290148924-pvghltcakmh4cb2oesp4mtlmtg2hqgvi.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+	"project_info": {
+		"project_number": "661290148924",
+		"project_id": "pedalea-cuenca",
+		"storage_bucket": "pedalea-cuenca.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:661290148924:android:e16bcf83128b6393a08f39",
+				"android_client_info": {
+					"package_name": "org.serviosoftware.pedaleacuenca"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "661290148924-pvghltcakmh4cb2oesp4mtlmtg2hqgvi.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyB_OLw6A0hB7fPmwy27W0BWbueDoTWmmlg"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "661290148924-pvghltcakmh4cb2oesp4mtlmtg2hqgvi.apps.googleusercontent.com",
+							"client_type": 3
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
 }

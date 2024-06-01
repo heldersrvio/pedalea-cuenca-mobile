@@ -82,7 +82,10 @@ const GooglePlacesInput = (props) => {
 			currentLocationLabel={'Ubicación actual'}
 			nearbyPlacesAPI={'None'}
 			query={{
-				key: Platform.OS === 'ios' ? process.env.GOOGLE_MAPS_API_KEY_IOS : process.env.GOOGLE_MAPS_API_KEY_ANDROID,
+				key:
+					Platform.OS === 'ios'
+						? process.env.GOOGLE_MAPS_API_KEY_IOS
+						: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
 				language: 'en',
 				locationrestriction: `rectangle:${props.cityLimits.southWest.latitude},${props.cityLimits.southWest.longitude}|${props.cityLimits.northEast.latitude},${props.cityLimits.northEast.longitude}`,
 			}}

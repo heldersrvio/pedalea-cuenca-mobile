@@ -43,7 +43,11 @@ const SubscribeModal = (props) => {
 				) : (
 					<View style={styles.modalView}>
 						<Subscription
-							label={isFreeTrialAvailable ? `Intenta grátis por ${FREE_TRIAL_DAYS} días` : 'Suscríbete'}
+							label={
+								isFreeTrialAvailable
+									? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
+									: 'Suscríbete'
+							}
 							whenSubscribe={() => setIsLoading(true)}
 							afterSubscribe={() => {
 								props.setModalVisible(false);

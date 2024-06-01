@@ -15,7 +15,7 @@ module.exports = {
 			splash: {
 				image: './assets/images/splash_screen.png',
 				resizeMode: 'cover',
-				backgroundColor: '#000000'
+				backgroundColor: '#000000',
 			},
 			config: {
 				usesNonExemptEncryption: false,
@@ -45,7 +45,7 @@ module.exports = {
 			splash: {
 				image: './assets/images/splash_screen.png',
 				resizeMode: 'cover',
-				backgroundColor: '#000000'
+				backgroundColor: '#000000',
 			},
 			googleServicesFile: './google-services.json',
 			package: 'org.serviosoftware.pedaleacuenca',
