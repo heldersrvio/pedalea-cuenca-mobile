@@ -96,17 +96,10 @@ const Subscription = (props) => {
 		currentPurchase,
 		currentPurchaseError,
 		finishTransaction,
-		getSubscriptions,
-		purchaseHistory,
-		getPurchaseHistory,
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
-	const {
-		setIsSubscribed,
-		setHasSubscription,
-		isFreeTrialAvailable,
-		setIsFreeTrialAvailable,
-	} = useContext(SubscriptionContext);
+	const { setIsSubscribed, setHasSubscription, isFreeTrialAvailable } =
+		useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
 	const [hasRequestedSubscription, setHasRequestedSubscription] =
 		useState(false);
@@ -133,22 +126,6 @@ const Subscription = (props) => {
 			await signInSilently(setIsSignedIn, null, true);
 		}
 	};
-
-	useEffect(() => {
-		const clearCacheAndFetchSubscriptions = async () => {
-			if (Platform.OS === 'android') {
-				await flushFailedPurchasesCachedAsPendingAndroid();
-			} else {
-				await clearTransactionIOS();
-			}
-			await getPurchaseHistory();
-			await getSubscriptions({
-				skus: [androidSubscriptionId, iosSubscriptionId],
-			});
-		};
-
-		clearCacheAndFetchSubscriptions();
-	}, []);
 
 	useEffect(() => {
 		const handleFinishPurchase = async () => {
@@ -189,26 +166,6 @@ const Subscription = (props) => {
 
 		handleFinishPurchase();
 	}, [currentPurchase, currentPurchaseError]);
-
-	useEffect(() => {
-		if (subscriptions && subscriptions?.[0] && !isFreeTrialAvailable) {
-			const subscription = subscriptions[0];
-			const offerId =
-				subscription?.subscriptionOfferDetails?.[0]?.offerId;
-
-			if (offerId) {
-				setIsFreeTrialAvailable(true);
-			} else {
-				if (
-					Platform.OS === 'ios' &&
-					purchaseHistory &&
-					purchaseHistory?.length === 0
-				) {
-					setIsFreeTrialAvailable(true);
-				}
-			}
-		}
-	}, [subscriptions, purchaseHistory]);
 
 	const subscribe = async () => {
 		try {

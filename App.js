@@ -1,5 +1,5 @@
-import { useState, createContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useState, useEffect, createContext } from 'react';
+import { StyleSheet, View, Platform } from 'react-native';
 import Navigation from './src/components/screens/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -15,14 +15,64 @@ import SignInContext from './src/contexts/SignInContext';
 import SubscriptionContext from './src/contexts/SubscriptionContext';
 import { withIAPContext } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
+import {
+	useIAP,
+	flushFailedPurchasesCachedAsPendingAndroid,
+	clearTransactionIOS,
+} from 'react-native-iap';
 
 const Drawer = createDrawerNavigator();
+
+const androidSubscriptionId = 'basic_1';
+const iosSubscriptionId = 'subscription_1';
 
 const App = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [hasSubscription, setHasSubscription] = useState(false);
 	const [isFreeTrialAvailable, setIsFreeTrialAvailable] = useState(false);
+	const {
+		subscriptions,
+		getSubscriptions,
+		purchaseHistory,
+		getPurchaseHistory,
+	} = useIAP();
+
+	useEffect(() => {
+		const clearCacheAndFetchSubscriptions = async () => {
+			if (Platform.OS === 'android') {
+				await flushFailedPurchasesCachedAsPendingAndroid();
+			} else {
+				await clearTransactionIOS();
+			}
+			await getPurchaseHistory();
+			await getSubscriptions({
+				skus: [androidSubscriptionId, iosSubscriptionId],
+			});
+		};
+
+		clearCacheAndFetchSubscriptions();
+	}, []);
+
+	useEffect(() => {
+		if (subscriptions && subscriptions?.[0] && !isFreeTrialAvailable) {
+			const subscription = subscriptions[0];
+			const offerId =
+				subscription?.subscriptionOfferDetails?.[0]?.offerId;
+
+			if (offerId) {
+				setIsFreeTrialAvailable(true);
+			} else {
+				if (
+					Platform.OS === 'ios' &&
+					purchaseHistory &&
+					purchaseHistory?.length === 0
+				) {
+					setIsFreeTrialAvailable(true);
+				}
+			}
+		}
+	}, [subscriptions, purchaseHistory]);
 
 	const signOut = async () => {
 		try {
