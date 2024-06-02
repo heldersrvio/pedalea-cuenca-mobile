@@ -112,10 +112,10 @@ const Subscription = (props) => {
 		useState(false);
 
 	const pollAfterPurchase = async (
-		triesRemaining = 5,
+		triesRemaining = 15,
 		setHasPurchased = null,
 	) => {
-		if (triesRemaining === 5) {
+		if (triesRemaining === 15) {
 			if (setHasPurchased) {
 				setHasPurchased(true);
 			}
