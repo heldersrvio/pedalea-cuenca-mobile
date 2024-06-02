@@ -1,6 +1,7 @@
 {
 	"cli": {
-		"version": ">= 7.3.0"
+		"version": ">= 7.3.0",
+		"appVersionSource": "remote"
 	},
 	"build": {
 		"development": {
@@ -39,7 +40,8 @@
 				"API_URL": "https://api.pedaleacuenca.com",
 				"GOOGLE_MAPS_API_KEY_ANDROID": "AIzaSyCnq1Exmx9j5Ujw1Q84hehcE3fcAmi_6P8",
 				"GOOGLE_MAPS_API_KEY_IOS": "AIzaSyCkPJuPdpsBf1R7-8VNyUbiLKxg8M_9_mM"
-			}
+			},
+			"autoIncrement": true
 		}
 	},
 	"submit": {
