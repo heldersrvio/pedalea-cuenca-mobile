@@ -36,8 +36,8 @@ const SubscribeModal = (props) => {
 				) : hasSubscription && !isSubscriptionActive ? (
 					<View style={styles.modalView}>
 						<Text>
-							Tu subscrición se encuentra pausada. Ve a Google
-							Play para manejarla.
+							Tu suscripción está pausada. Ve a App Store o a
+							Google Play para manejarla.
 						</Text>
 					</View>
 				) : (

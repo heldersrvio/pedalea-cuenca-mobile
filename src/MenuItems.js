@@ -21,7 +21,7 @@ export default [
 		component: Account,
 	},
 	{
-		name: 'Entrar',
+		name: 'Ingresar',
 		iconType: 'Ionicons',
 		iconName: 'enter',
 		needsLogIn: false,

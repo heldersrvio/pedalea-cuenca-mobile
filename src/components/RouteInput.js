@@ -207,7 +207,7 @@ const RouteInput = (props) => {
 					style={styles.input}
 					setLat={setSLat}
 					setLon={setSLon}
-					placeholder="Punto de partida"
+					placeholder="Ubicación de partida"
 					minLength={5}
 					cityLimits={props.cityLimits}
 					currentLocation={locationStatus?.granted === true}
@@ -219,7 +219,7 @@ const RouteInput = (props) => {
 					style={styles.input}
 					setLat={setDLat}
 					setLon={setDLon}
-					placeholder="Destinación"
+					placeholder="Destino"
 					minLength={5}
 					cityLimits={props.cityLimits}
 					currentLocation={false}

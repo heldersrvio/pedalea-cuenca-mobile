@@ -9,7 +9,7 @@ const Contact = (_props) => {
 		<View style={styles.container}>
 			<Text style={styles.contactField}>
 				No dudes en enviarnos cualquier pregunta, sugerencia o queja que
-				puedas tener.
+				tengas.
 			</Text>
 			<View style={styles.contactField}>
 				<Text style={styles.label}>Correo: </Text>

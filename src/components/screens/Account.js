@@ -58,7 +58,7 @@ const Account = (_props) => {
 					<Text>Estamos procesando tu suscripción.</Text>
 				) : (
 					<Text>
-						Tu suscripción se encuentra{' '}
+						Tu suscripción está{' '}
 						{isSubscribed ? (
 							<Text style={styles.activeStatus}>activa</Text>
 						) : (
