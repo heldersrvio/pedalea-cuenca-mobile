@@ -6,7 +6,7 @@ import RouteInput from '../RouteInput';
 import SignInModal from '../modals/SignInModal';
 import SubscribeModal from '../modals/SubscribeModal';
 
-const CITY_LIMITS = {
+const MAP_CITY_LIMITS = {
 	northEast: {
 		latitude: -2.8683698,
 		longitude: -78.9752444,
@@ -14,6 +14,17 @@ const CITY_LIMITS = {
 	southWest: {
 		latitude: -2.9380468,
 		longitude: -79.0494328,
+	},
+};
+
+const PLACES_CITY_LIMITS = {
+	northEast: {
+		latitude: -2.812404,
+		longitude: -78.93825,
+	},
+	southWest: {
+		latitude: -2.967732,
+		longitude: -79.099612,
 	},
 };
 
@@ -29,14 +40,14 @@ const Navigation = (props) => {
 		<View style={styles.container}>
 			<Map
 				style={styles.map}
-				cityLimits={CITY_LIMITS}
+				cityLimits={MAP_CITY_LIMITS}
 				route={route}
 				startingPoint={startingPoint}
 				destination={destination}
 			/>
 			<RouteInput
 				style={styles.routeInput}
-				cityLimits={CITY_LIMITS}
+				cityLimits={PLACES_CITY_LIMITS}
 				handleRoute={setRoute}
 				setStartingPoint={setStartingPoint}
 				setDestination={setDestination}
