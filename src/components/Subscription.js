@@ -175,6 +175,9 @@ const Subscription = (props) => {
 				const offerToken =
 					subscription?.subscriptionOfferDetails?.[0]?.offerToken;
 
+				if (Platform.OS === 'ios') {
+					await clearTransactionIOS();
+				}
 				const uuid = Crypto.randomUUID();
 				setAppAccountToken(uuid);
 				await requestSubscription({
