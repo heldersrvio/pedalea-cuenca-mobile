@@ -74,8 +74,10 @@ const GooglePlacesInput = (props) => {
 				const location = details?.geometry?.location;
 				console.log(JSON.stringify(location));
 				if (location) {
-					props.setLat(location.lat);
-					props.setLon(location.lng);
+					props.setCoords({
+						lat: location.lat,
+						lon: location.lng,
+					});
 				}
 			}}
 			currentLocation={props.currentLocation}
@@ -95,10 +97,8 @@ const GooglePlacesInput = (props) => {
 };
 
 const RouteInput = (props) => {
-	const [sLat, setSLat] = useState(null);
-	const [sLon, setSLon] = useState(null);
-	const [dLat, setDLat] = useState(null);
-	const [dLon, setDLon] = useState(null);
+	const [sCoords, setSCoords] = useState(null);
+	const [dCoords, setDCoords] = useState(null);
 	const startingRef = useRef(null);
 	const destinationRef = useRef(null);
 	const [locationStatus, requestPermission] =
@@ -109,15 +109,15 @@ const RouteInput = (props) => {
 
 	const handleCoordinatesIfSignedIn = async () => {
 		if (await verifySubscription(null, setHasSubscription)) {
-			getRouteForCoordinates(sLat, sLon, dLat, dLon, props.handleRoute);
+			getRouteForCoordinates(sCoords?.lat, sCoords?.lon, dCoords?.lat, dCoords?.lon, props.handleRoute);
 		} else {
 			await signInSilently(setIsSignedIn, null, true);
 			if (await verifySubscription(null, setHasSubscription)) {
 				getRouteForCoordinates(
-					sLat,
-					sLon,
-					dLat,
-					dLon,
+					sCoords?.lat,
+					sCoords?.lon,
+					dCoords?.lat,
+					dCoords?.lon,
 					props.handleRoute,
 				);
 			} else if (props.enableSubscribeModal) {
@@ -128,7 +128,7 @@ const RouteInput = (props) => {
 
 	useEffect(() => {
 		const handleCoordinates = async () => {
-			if (sLat && sLon && dLat && dLon) {
+			if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
 				if (isSignedIn) {
 					await handleCoordinatesIfSignedIn();
 				} else {
@@ -140,25 +140,25 @@ const RouteInput = (props) => {
 		};
 
 		handleCoordinates();
-	}, [sLat, sLon, dLat, dLon]);
+	}, [sCoords, dCoords]);
 
 	useEffect(() => {
-		if (dLat && dLon) {
+		if (dCoords?.lat && dCoords?.lon) {
 			props.setDestination({
-				latitude: dLat,
-				longitude: dLon,
+				latitude: dCoords?.lat,
+				longitude: dCoords?.lon,
 			});
 		}
-	}, [dLat, dLon]);
+	}, [dCoords]);
 
 	useEffect(() => {
-		if (sLat && sLon) {
+		if (sCoords?.lat && sCoords?.lon) {
 			props.setStartingPoint({
-				latitude: sLat,
-				longitude: sLon,
+				latitude: sCoords?.lat,
+				longitude: sCoords?.lon,
 			});
 		}
-	}, [sLat, sLon]);
+	}, [sCoords]);
 
 	useEffect(() => {
 		const checkLocationPermission = async () => {
@@ -180,16 +180,14 @@ const RouteInput = (props) => {
 
 	useEffect(() => {
 		if (!isSignedIn) {
-			setSLat(null);
-			setSLon(null);
-			setDLat(null);
-			setDLon(null);
+			setSCoords(null);
+			setDCoords(null);
 			props.setStartingPoint(null);
 			props.setDestination(null);
 			props.handleRoute(null);
 			startingRef.current?.setAddressText('');
 			destinationRef.current?.setAddressText('');
-		} else if (sLat && sLon && dLat && dLon) {
+		} else if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
 			handleCoordinatesIfSignedIn();
 		}
 	}, [isSignedIn, isSubscribed]);
@@ -205,8 +203,7 @@ const RouteInput = (props) => {
 				<GooglePlacesInput
 					autocompleteRef={startingRef}
 					style={styles.input}
-					setLat={setSLat}
-					setLon={setSLon}
+					setCoords={setSCoords}
 					placeholder="Ubicación de partida"
 					minLength={5}
 					cityLimits={props.cityLimits}
@@ -217,8 +214,7 @@ const RouteInput = (props) => {
 				<GooglePlacesInput
 					autocompleteRef={destinationRef}
 					style={styles.input}
-					setLat={setDLat}
-					setLon={setDLon}
+					setCoords={setDCoords}
 					placeholder="Destino"
 					minLength={5}
 					cityLimits={props.cityLimits}
