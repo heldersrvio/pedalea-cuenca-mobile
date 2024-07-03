@@ -109,7 +109,13 @@ const RouteInput = (props) => {
 
 	const handleCoordinatesIfSignedIn = async () => {
 		if (await verifySubscription(null, setHasSubscription)) {
-			getRouteForCoordinates(sCoords?.lat, sCoords?.lon, dCoords?.lat, dCoords?.lon, props.handleRoute);
+			getRouteForCoordinates(
+				sCoords?.lat,
+				sCoords?.lon,
+				dCoords?.lat,
+				dCoords?.lon,
+				props.handleRoute,
+			);
 		} else {
 			await signInSilently(setIsSignedIn, null, true);
 			if (await verifySubscription(null, setHasSubscription)) {
@@ -187,7 +193,12 @@ const RouteInput = (props) => {
 			props.handleRoute(null);
 			startingRef.current?.setAddressText('');
 			destinationRef.current?.setAddressText('');
-		} else if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
+		} else if (
+			sCoords?.lat &&
+			sCoords?.lon &&
+			dCoords?.lat &&
+			dCoords?.lon
+		) {
 			handleCoordinatesIfSignedIn();
 		}
 	}, [isSignedIn, isSubscribed]);

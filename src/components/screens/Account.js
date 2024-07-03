@@ -55,7 +55,10 @@ const Account = (_props) => {
 		<View style={styles.container}>
 			{isSubscribed !== null && isSubscribed !== undefined ? (
 				!isSubscribed && hasPurchased ? (
-					<Text>Estamos procesando tu suscripción. Es probable que esté lista en unos minutos.</Text>
+					<Text>
+						Estamos procesando tu suscripción. Es probable que esté
+						lista en unos minutos.
+					</Text>
 				) : (
 					<Text>
 						Tu suscripción está{' '}

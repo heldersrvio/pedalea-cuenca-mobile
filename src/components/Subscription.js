@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button, StyleSheet, Text, Platform } from 'react-native';
+import {
+	Button,
+	StyleSheet,
+	Text,
+	Platform,
+	ActivityIndicator,
+} from 'react-native';
 import SignInContext from '../contexts/SignInContext';
 import SubscriptionContext from '../contexts/SubscriptionContext';
 import {
@@ -98,8 +104,12 @@ const Subscription = (props) => {
 		finishTransaction,
 	} = useIAP();
 	const { setIsSignedIn } = useContext(SignInContext);
-	const { setIsSubscribed, setHasSubscription, isFreeTrialAvailable } =
-		useContext(SubscriptionContext);
+	const {
+		setIsSubscribed,
+		setHasSubscription,
+		isFreeTrialAvailable,
+		hasLoadedSubscriptions,
+	} = useContext(SubscriptionContext);
 	const [appAccountToken, setAppAccountToken] = useState(null);
 	const [hasRequestedSubscription, setHasRequestedSubscription] =
 		useState(false);
@@ -199,7 +209,7 @@ const Subscription = (props) => {
 		}
 	};
 
-	return (
+	return hasLoadedSubscriptions ? (
 		<Button
 			title={
 				props.label
@@ -211,6 +221,8 @@ const Subscription = (props) => {
 			onPress={subscribe}
 			style={styles.button}
 		/>
+	) : (
+		<ActivityIndicator size="large" />
 	);
 };
 

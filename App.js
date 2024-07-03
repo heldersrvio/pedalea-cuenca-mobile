@@ -34,6 +34,7 @@ const App = () => {
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [hasSubscription, setHasSubscription] = useState(false);
 	const [isFreeTrialAvailable, setIsFreeTrialAvailable] = useState(false);
+	const [hasLoadedSubscriptions, setHasLoadedSubscriptions] = useState(false);
 	const {
 		subscriptions,
 		getSubscriptions,
@@ -42,17 +43,26 @@ const App = () => {
 	} = useIAP();
 
 	useEffect(() => {
-		const clearCacheAndFetchSubscriptions = async () => {
-			if (Platform.OS === 'android') {
-				await flushFailedPurchasesCachedAsPendingAndroid();
-			} else {
-				await clearTransactionIOS();
-			}
+		const fetchSubscriptions = async () => {
 			await getPurchaseHistory();
 			await getSubscriptions({
 				skus: [androidSubscriptionId, iosSubscriptionId],
 			});
-			await SplashScreen.hideAsync();
+		};
+
+		const clearCacheAndFetchSubscriptions = async () => {
+			if (Platform.OS === 'android') {
+				await flushFailedPurchasesCachedAsPendingAndroid();
+				await fetchSubscriptions();
+				await SplashScreen.hideAsync();
+				setHasLoadedSubscriptions(true);
+			} else {
+				await SplashScreen.hideAsync();
+				await clearTransactionIOS();
+				await fetchSubscriptions();
+				setHasLoadedSubscriptions(true);
+			}
+
 		};
 
 		clearCacheAndFetchSubscriptions();
@@ -119,6 +129,7 @@ const App = () => {
 						setHasSubscription,
 						isFreeTrialAvailable,
 						setIsFreeTrialAvailable,
+						hasLoadedSubscriptions,
 					}}
 				>
 					<Drawer.Navigator
