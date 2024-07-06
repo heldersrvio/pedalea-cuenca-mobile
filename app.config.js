@@ -12,6 +12,7 @@ module.exports = {
 			supportsTablet: false,
 			googleServicesFile: './GoogleService-Info.plist',
 			bundleIdentifier: 'org.serviosoftware.pedaleacuenca',
+			usesAppleSignIn: true,
 			splash: {
 				image: './assets/images/splash_screen.png',
 				resizeMode: 'cover',

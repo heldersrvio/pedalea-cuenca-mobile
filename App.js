@@ -62,7 +62,6 @@ const App = () => {
 				await fetchSubscriptions();
 				setHasLoadedSubscriptions(true);
 			}
-
 		};
 
 		clearCacheAndFetchSubscriptions();

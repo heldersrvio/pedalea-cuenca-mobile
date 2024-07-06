@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import GoogleSignIn from '../GoogleSignIn';
+import AppleSignIn from '../AppleSignIn';
 
 const SignIn = (props) => {
 	return (
 		<View style={styles.container}>
 			<GoogleSignIn />
+			{Platform.OS === 'ios' ? <AppleSignIn /> : null}
 		</View>
 	);
 };
@@ -18,5 +20,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+		gap: 15,
 	},
 });

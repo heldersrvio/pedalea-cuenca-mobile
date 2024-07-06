@@ -2,9 +2,14 @@ import {
 	GoogleSignin,
 	GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from 'jwt-decode';
 import { decode } from 'base-64';
+import {
+	appleAuth,
+	appleAuthAndroid,
+} from '@invertase/react-native-apple-authentication';
 
 global.atob = decode;
 
@@ -14,7 +19,7 @@ GoogleSignin.configure({
 	offlineAccess: false,
 });
 
-const signInToBackEnd = async (idToken) => {
+const signInToBackEnd = async (idToken, authenticationProvider = null) => {
 	const url = new URL(`${process.env.API_URL}/signin`);
 	const response = await fetch(url, {
 		method: 'POST',
@@ -24,6 +29,7 @@ const signInToBackEnd = async (idToken) => {
 		},
 		body: JSON.stringify({
 			idToken,
+			authenticationProvider,
 		}),
 	});
 	const json = await response.json();
@@ -35,6 +41,7 @@ export const signIn = async (
 	setIsSignInInProgress,
 	setIsSignedIn,
 	afterSignIn = null,
+	provider = 'google',
 ) => {
 	try {
 		if (await validateToken()) {
@@ -47,14 +54,46 @@ export const signIn = async (
 			return;
 		}
 		setIsSignInInProgress(true);
-		await GoogleSignin.hasPlayServices();
-		const userInfo = await GoogleSignin.signIn({
-			showPlayServicesUpdateDialog: true,
-		});
-		await signInToBackEnd(userInfo.idToken);
-		setIsSignInInProgress(false);
-		if (setIsSignedIn) {
-			setIsSignedIn(true);
+		if (provider === 'apple') {
+			if (Platform.OS === 'ios') {
+				const userInfo = await appleAuth.performRequest(
+					{
+						requestedOperation: appleAuth.Operation.LOGIN,
+						requestedScopes: [
+							appleAuth.Scope.FULL_NAME,
+							appleAuth.Scope.EMAIL,
+						],
+					},
+				);
+				await signInToBackEnd(userInfo.id_token, 'apple');
+				setIsSignInInProgress(false);
+				if (setIsSignedIn) {
+					setIsSignedIn(true);
+				}
+			} else {
+				appleAuthAndroid.configure({
+					clientId: 'org.serviosoftware.pedaleacuenca-android',
+					redirectUri: process.env.API_URL,
+					responseType: appleAuthAndroid.ResponseType.ALL,
+					scope: appleAuthAndroid.Scope.ALL,
+				});
+				const userInfo = await appleAuthAndroid.signIn();
+				await signInToBackEnd(userInfo.id_token, 'apple');
+				setIsSignInInProgress(false);
+				if (setIsSignedIn) {
+					setIsSignedIn(true);
+				}
+			}
+		} else {
+			await GoogleSignin.hasPlayServices();
+			const userInfo = await GoogleSignin.signIn({
+				showPlayServicesUpdateDialog: true,
+			});
+			await signInToBackEnd(userInfo.idToken);
+			setIsSignInInProgress(false);
+			if (setIsSignedIn) {
+				setIsSignedIn(true);
+			}
 		}
 	} catch (error) {
 		console.log(error.message);
