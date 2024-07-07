@@ -56,16 +56,14 @@ export const signIn = async (
 		setIsSignInInProgress(true);
 		if (provider === 'apple') {
 			if (Platform.OS === 'ios') {
-				const userInfo = await appleAuth.performRequest(
-					{
-						requestedOperation: appleAuth.Operation.LOGIN,
-						requestedScopes: [
-							appleAuth.Scope.FULL_NAME,
-							appleAuth.Scope.EMAIL,
-						],
-					},
-				);
-				await signInToBackEnd(userInfo.id_token, 'apple');
+				const userInfo = await appleAuth.performRequest({
+					requestedOperation: appleAuth.Operation.LOGIN,
+					requestedScopes: [
+						appleAuth.Scope.FULL_NAME,
+						appleAuth.Scope.EMAIL,
+					],
+				});
+				await signInToBackEnd(userInfo.identityToken, 'apple');
 				setIsSignInInProgress(false);
 				if (setIsSignedIn) {
 					setIsSignedIn(true);
