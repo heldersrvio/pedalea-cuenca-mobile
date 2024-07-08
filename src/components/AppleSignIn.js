@@ -3,7 +3,7 @@ import SignInContext from '../contexts/SignInContext';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { signIn } from './SignInUtils';
 
-const GoogleSignIn = (props) => {
+const AppleSignIn = (props) => {
 	const [isSignInInProgress, setIsSignInInProgress] = useState(false);
 	const { setIsSignedIn } = useContext(SignInContext);
 
@@ -36,4 +36,4 @@ const GoogleSignIn = (props) => {
 	);
 };
 
-export default GoogleSignIn;
+export default AppleSignIn;

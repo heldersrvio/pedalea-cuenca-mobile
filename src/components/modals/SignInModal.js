@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Modal, StyleSheet, Text, View, Platform } from 'react-native';
 import GoogleSignIn from '../GoogleSignIn';
+import AppleSignIn from '../AppleSignIn';
 
 const SignInModal = (props) => {
 	return (
@@ -14,11 +15,16 @@ const SignInModal = (props) => {
 		>
 			<View style={styles.centeredView}>
 				<View style={styles.modalView}>
-					<Text>Entra con tu cuenta Google</Text>
+					<Text>Entra con tu cuenta</Text>
 					<Text>{'\n'}</Text>
 					<GoogleSignIn
 						afterSignIn={() => props.setModalVisible(false)}
 					/>
+					{Platform.OS === 'ios' ? (
+						<AppleSignIn
+							afterSignIn={() => props.setModalVisible(false)}
+						/>
+					) : null}
 				</View>
 			</View>
 		</Modal>
