@@ -3,13 +3,11 @@ import { Platform, StyleSheet, View, Text } from 'react-native';
 import SignInContext from '../../contexts/SignInContext';
 import SubscriptionContext from '../../contexts/SubscriptionContext';
 import Subscription from '../Subscription';
+import DeleteAccount from '../DeleteAccount';
 import { signInSilently } from '../SignInUtils';
 import * as SecureStore from 'expo-secure-store';
 
 const Account = (_props) => {
-	const EMAIL_ADDRESS = 'ciclorrutas_cuenca@gmail.com';
-	const TELEPHONE = '0958879836';
-
 	const [hasPurchased, setHasPurchased] = useState(false);
 	const { setIsSignedIn } = useContext(SignInContext);
 	const {
@@ -94,6 +92,7 @@ const Account = (_props) => {
 					.
 				</Text>
 			) : null}
+			<DeleteAccount />
 		</View>
 	);
 };
