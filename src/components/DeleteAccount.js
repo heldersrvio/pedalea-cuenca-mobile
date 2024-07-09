@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import SignInContext from '../contexts/SignInContext';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Button, Alert } from 'react-native';
+import { Button, Alert, View, StyleSheet } from 'react-native';
 
 const DeleteAccount = (props) => {
 	const { setIsSignedIn } = useContext(SignInContext);
@@ -58,12 +58,21 @@ const DeleteAccount = (props) => {
 	};
 
 	return (
-		<Button
-			title={'Eliminar cuenta'}
-			onPress={confirmDelete}
-			color={'red'}
-		/>
+		<View style={styles.container}>
+			<Button
+				title={'Eliminar cuenta'}
+				onPress={confirmDelete}
+				color={'red'}
+				style={styles.button}
+			/>
+		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		marginTop: 20,
+	},
+});
 
 export default DeleteAccount;
