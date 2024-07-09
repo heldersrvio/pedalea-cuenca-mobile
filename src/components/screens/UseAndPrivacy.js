@@ -2,19 +2,15 @@ import React from 'react';
 import { StyleSheet, View, Text, Linking } from 'react-native';
 
 const UseAndPrivacy = (_props) => {
-<<<<<<< Updated upstream
-	const PRIVACY_POLICY_URL = 'contacto@pedaleacuenca.com';
-	const TERMS_OF_USE_URL = 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
-=======
 	const PRIVACY_POLICY_URL = 'https://www.pedaleacuenca.com/privacy';
 	const TERMS_OF_USE_URL =
 		'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/';
->>>>>>> Stashed changes
 
 	return (
 		<View style={styles.container}>
 			<Text>
-				Con los siguientes enlaces, puedes ver nuestros términos de uso y política de privacidad.
+				Con los siguientes enlaces, puedes ver nuestros términos de uso
+				y política de privacidad.
 			</Text>
 			<Text>{'\n'}</Text>
 			<View style={styles.linksContainer}>
@@ -26,11 +22,10 @@ const UseAndPrivacy = (_props) => {
 				</Text>
 				<Text
 					style={styles.link}
-<<<<<<< Updated upstream
-					onPress={() => Linking.openURL('https://www.pedaleacuenca.com/privacy')}
-=======
 					onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
->>>>>>> Stashed changes
+					onPress={() =>
+						Linking.openURL('https://www.pedaleacuenca.com/privacy')
+					}
 				>
 					{'Política de privacidad'}
 				</Text>

@@ -37,24 +37,32 @@ const DeleteAccount = (props) => {
 	};
 
 	const confirmDelete = () => {
-		return Alert.alert('¿Estás seguro?', 'Si tienes alguna suscripción, ya no vas a poder acceder a ella.', [
-			{
-				text: 'Cancelar',
-				style: 'default'
-			},
-			{
-				text: 'Sí, eliminar',
-				style: 'destructive',
-				onPress: async () => {
-					await deleteUser();
-					await signOut();
+		return Alert.alert(
+			'¿Estás seguro?',
+			'Si tienes alguna suscripción, ya no vas a poder acceder a ella.',
+			[
+				{
+					text: 'Cancelar',
+					style: 'default',
 				},
-			},
-		])
+				{
+					text: 'Sí, eliminar',
+					style: 'destructive',
+					onPress: async () => {
+						await deleteUser();
+						await signOut();
+					},
+				},
+			],
+		);
 	};
 
 	return (
-		<Button title={'Eliminar cuenta'} onPress={confirmDelete} color={'red'} />
+		<Button
+			title={'Eliminar cuenta'}
+			onPress={confirmDelete}
+			color={'red'}
+		/>
 	);
 };
 

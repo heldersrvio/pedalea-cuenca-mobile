@@ -57,16 +57,7 @@ const SubscribeModal = (props) => {
 							}}
 						/>
 						<Text>{'\n'}</Text>
-						<Text>
-							{isFreeTrialAvailable ? 'Y después, ' : ''}
-							<Text style={styles.price}>
-								$
-								{Platform.OS === 'ios'
-									? PRICE_IOS
-									: PRICE_ANDROID}
-							</Text>{' '}
-							mensuales. Cancelas cuando quieras.
-						</Text>
+						<Text>Cancelas cuando quieras.</Text>
 					</View>
 				)}
 			</View>

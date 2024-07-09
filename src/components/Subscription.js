@@ -5,6 +5,7 @@ import {
 	Text,
 	Platform,
 	ActivityIndicator,
+	View,
 } from 'react-native';
 import SignInContext from '../contexts/SignInContext';
 import SubscriptionContext from '../contexts/SubscriptionContext';
@@ -22,6 +23,8 @@ const androidSubscriptionId = 'basic_1';
 const iosSubscriptionId = 'subscription_1';
 
 const FREE_TRIAL_DAYS = 3;
+const PRICE_ANDROID = 5.99;
+const PRICE_IOS = 6.99;
 
 const setUserPurchaseToken = async (purchaseToken) => {
 	const authToken = await SecureStore.getItemAsync('login_token');
@@ -210,25 +213,51 @@ const Subscription = (props) => {
 	};
 
 	return hasLoadedSubscriptions ? (
-		<Button
-			title={
-				props.label
-					? props.label
-					: isFreeTrialAvailable
-						? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
-						: 'Suscríbete'
-			}
-			onPress={subscribe}
-			style={styles.button}
-		/>
+		<View style={styles.container}>
+			<Text>
+				Con la <Text style={styles.strong}>suscripción</Text>, tienes
+				acceso ilimitado al enrutamiento y a soporte por correo o
+				teléfono.
+			</Text>
+			<Text>
+				Es mensual y cuesta{' '}
+				<Text style={styles.price}>
+					${Platform.OS === 'ios' ? PRICE_IOS : PRICE_ANDROID}
+				</Text>{' '}
+				al mes.
+			</Text>
+			<Button
+				title={
+					props.label
+						? props.label
+						: isFreeTrialAvailable
+							? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
+							: 'Suscríbete'
+				}
+				onPress={subscribe}
+				style={styles.button}
+			/>
+		</View>
 	) : (
 		<ActivityIndicator size="large" />
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 15,
+	},
 	button: {
 		backgroundColor: 'blue',
+	},
+	price: {
+		fontWeight: 'bold',
+		color: 'green',
+	},
+	strong: {
+		fontWeight: 'bold',
 	},
 });
 

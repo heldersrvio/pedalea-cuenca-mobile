@@ -60,9 +60,7 @@ module.exports = {
 				'com.android.vending.BILLING',
 				'android.permission.ACCESS_FINE_LOCATION',
 			],
-			blockedPermissions: [
-				'FOREGROUND_SERVICE_LOCATION'
-			],
+			blockedPermissions: ['FOREGROUND_SERVICE_LOCATION'],
 		},
 		owner: 'heldersrvio',
 		extra: {
