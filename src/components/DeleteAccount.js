@@ -37,7 +37,7 @@ const DeleteAccount = (props) => {
 	};
 
 	const confirmDelete = () => {
-		return Alert.alert('¿Estás seguro?', 'Si tienes alguna suscripción, ya no vas a poder accesarla.', [
+		return Alert.alert('¿Estás seguro?', 'Si tienes alguna suscripción, ya no vas a poder acceder a ella.', [
 			{
 				text: 'Cancelar',
 				style: 'default'

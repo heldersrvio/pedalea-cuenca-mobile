@@ -2,6 +2,7 @@ import Navigation from './components/screens/Navigation';
 import SignIn from './components/screens/SignIn';
 import Contact from './components/screens/Contact';
 import Account from './components/screens/Account';
+import UseAndPrivacy from './components/screens/UseAndPrivacy';
 
 export default [
 	{
@@ -35,5 +36,14 @@ export default [
 		iconName: 'chatbubbles-sharp',
 		needsLogIn: false,
 		needsLogOut: false,
+	},
+	{
+		name: 'Uso y Privacidad',
+		component: UseAndPrivacy,
+		iconType: 'Ionicons',
+		iconName: 'document-sharp',
+		needsLogIn: false,
+		needsLogOut: false,
+		appleOnly: true,
 	},
 ];

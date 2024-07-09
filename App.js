@@ -137,11 +137,11 @@ const App = () => {
 						drawerContent={CustomDrawerContent}
 					>
 						{MenuItems.map((drawer) => {
-							if (
+							if ((
 								(drawer.needsLogIn && isSignedIn) ||
 								(drawer.needsLogOut && !isSignedIn) ||
 								(!drawer.needsLogIn && !drawer.needsLogOut)
-							) {
+							) && (!drawer.appleOnly || (drawer.appleOnly && Platform.OS === 'ios'))) {
 								return (
 									<Drawer.Screen
 										key={drawer.name}
