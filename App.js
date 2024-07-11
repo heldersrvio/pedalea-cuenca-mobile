@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, ToastAndroid, Platform } from 'react-native';
 import Navigation from './src/components/screens/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -92,6 +92,9 @@ const App = () => {
 			await GoogleSignin.signOut();
 			await SecureStore.deleteItemAsync('login_token');
 			setIsSignedIn(false);
+			if (Platform.OS === 'android') {
+				ToastAndroid.show('Sesión finalizada', ToastAndroid.SHORT);
+			}
 		} catch (error) {
 			console.log(error.message);
 		}
