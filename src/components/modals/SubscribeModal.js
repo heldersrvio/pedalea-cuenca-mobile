@@ -57,7 +57,27 @@ const SubscribeModal = (props) => {
 							}}
 						/>
 						<Text>{'\n'}</Text>
-						<Text>Cancelas cuando quieras.</Text>
+						<Text>
+							{Platform.OS === 'android' ? (
+								isFreeTrialAvailable ? (
+									<Text>
+										{'Y después, '}
+										<Text style={styles.price}>
+											${`${PRICE_ANDROID}`}
+										</Text>
+										{' al mes. '}
+									</Text>
+								) : (
+									<Text>
+										<Text style={styles.price}>
+											${`${PRICE_ANDROID}`}
+										</Text>
+										{' al mes. '}
+									</Text>
+								)
+							) : null}
+							Cancelas cuando quieras.
+						</Text>
 					</View>
 				)}
 			</View>

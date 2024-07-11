@@ -214,18 +214,22 @@ const Subscription = (props) => {
 
 	return hasLoadedSubscriptions ? (
 		<View style={styles.container}>
-			<Text>
-				Con la <Text style={styles.strong}>suscripción</Text>, tienes
-				acceso ilimitado al enrutamiento y a soporte por correo o
-				teléfono.
-			</Text>
-			<Text>
-				Es mensual y cuesta{' '}
-				<Text style={styles.price}>
-					${Platform.OS === 'ios' ? PRICE_IOS : PRICE_ANDROID}
-				</Text>{' '}
-				al mes.
-			</Text>
+			{Platform.OS === 'ios' ? (
+				<Text>
+					Con la <Text style={styles.strong}>suscripción</Text>,
+					tienes acceso ilimitado al enrutamiento y a soporte por
+					correo o teléfono.
+				</Text>
+			) : null}
+			{Platform.OS === 'ios' ? (
+				<Text>
+					Es mensual y cuesta{' '}
+					<Text style={styles.price}>
+						${Platform.OS === 'ios' ? PRICE_IOS : PRICE_ANDROID}
+					</Text>{' '}
+					al mes.
+				</Text>
+			) : null}
 			<Button
 				title={
 					props.label
