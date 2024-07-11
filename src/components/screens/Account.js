@@ -85,7 +85,7 @@ const Account = (_props) => {
 						</Text>
 					) : (
 						<Text style={styles.strong}>
-							Google Play > [ícono de cuenta] > Pagos y
+							Play Store > [ícono de cuenta] > Pagos y
 							suscripciones > Suscripciones
 						</Text>
 					)}
