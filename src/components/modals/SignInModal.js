@@ -1,5 +1,12 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, View, Platform } from 'react-native';
+import {
+	Modal,
+	StyleSheet,
+	Text,
+	View,
+	Platform,
+	TouchableWithoutFeedback,
+} from 'react-native';
 import GoogleSignIn from '../GoogleSignIn';
 import AppleSignIn from '../AppleSignIn';
 
@@ -13,6 +20,13 @@ const SignInModal = (props) => {
 				props.setModalVisible(false);
 			}}
 		>
+			<TouchableWithoutFeedback
+				onPress={() => {
+					props.setModalVisible(false);
+				}}
+			>
+				<View style={styles.modalOverlay} />
+			</TouchableWithoutFeedback>
 			<View style={styles.centeredView}>
 				<View style={styles.modalView}>
 					<Text>Entra con tu cuenta</Text>
@@ -37,6 +51,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
+	},
+	modalOverlay: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		left: 0,
+		bottom: 0,
+		backgroundColor: 'rgba(0,0,0,0)',
 	},
 	modalView: {
 		margin: 20,

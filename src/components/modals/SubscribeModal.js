@@ -6,6 +6,7 @@ import {
 	Text,
 	View,
 	Platform,
+	TouchableWithoutFeedback,
 } from 'react-native';
 import Subscription from '../Subscription';
 import SubscriptionContext from '../../contexts/SubscriptionContext';
@@ -28,6 +29,13 @@ const SubscribeModal = (props) => {
 				props.setModalVisible(false);
 			}}
 		>
+			<TouchableWithoutFeedback
+				onPress={() => {
+					props.setModalVisible(false);
+				}}
+			>
+				<View style={styles.modalOverlay} />
+			</TouchableWithoutFeedback>
 			<View style={styles.centeredView}>
 				{isLoading ? (
 					<View style={styles.modalView}>
@@ -91,6 +99,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22,
+	},
+	modalOverlay: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		left: 0,
+		bottom: 0,
+		backgroundColor: 'rgba(0,0,0,0)',
 	},
 	modalView: {
 		margin: 15,
