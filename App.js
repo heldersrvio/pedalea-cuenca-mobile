@@ -108,8 +108,12 @@ const App = () => {
 					<DrawerItem
 						label="Salir"
 						onPress={async () => {
-							await signOut();
-							props.navigation.closeDrawer();
+							try {
+								await signOut();
+								props.navigation.closeDrawer();
+							} catch (error) {
+								console.log(error.message);
+							}
 						}}
 						icon={() => (
 							<Ionicons name="exit" size={24} color="black" />
@@ -140,36 +144,40 @@ const App = () => {
 						drawerContent={CustomDrawerContent}
 					>
 						{MenuItems.map((drawer) => {
-							if (
-								((drawer.needsLogIn && isSignedIn) ||
-									(drawer.needsLogOut && !isSignedIn) ||
-									(!drawer.needsLogIn &&
-										!drawer.needsLogOut)) &&
-								(!drawer.appleOnly ||
-									(drawer.appleOnly && Platform.OS === 'ios'))
-							) {
-								return (
-									<Drawer.Screen
-										key={drawer.name}
-										name={drawer.name}
-										options={{
-											drawerIcon: () => (
-												<Ionicons
-													name={drawer.iconName}
-													size={24}
-													color="black"
+							try {
+								if (
+									((drawer.needsLogIn && isSignedIn) ||
+										(drawer.needsLogOut && !isSignedIn) ||
+										(!drawer.needsLogIn &&
+											!drawer.needsLogOut)) &&
+									(!drawer.appleOnly ||
+										(drawer.appleOnly && Platform.OS === 'ios'))
+								) {
+									return (
+										<Drawer.Screen
+											key={drawer.name}
+											name={drawer.name}
+											options={{
+												drawerIcon: () => (
+													<Ionicons
+														name={drawer.iconName}
+														size={24}
+														color="black"
+													/>
+												),
+											}}
+											component={drawer.component}
+											drawerContent={(props) => (
+												<CustomDrawerContent
+													{...props}
+													signOut={signOut}
 												/>
-											),
-										}}
-										component={drawer.component}
-										drawerContent={(props) => (
-											<CustomDrawerContent
-												{...props}
-												signOut={signOut}
-											/>
-										)}
-									/>
-								);
+											)}
+										/>
+									);
+								}
+							} catch (error) {
+								console.log(error.message);
 							}
 							return null;
 						})}

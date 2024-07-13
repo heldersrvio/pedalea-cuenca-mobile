@@ -27,75 +27,87 @@ const PRICE_ANDROID = 5.99;
 const PRICE_IOS = 6.99;
 
 const setUserPurchaseToken = async (purchaseToken) => {
-	const authToken = await SecureStore.getItemAsync('login_token');
-	const userId = await SecureStore.getItemAsync('user_id');
-	if (!userId) {
-		console.log('No user id found');
-		return;
-	}
+	try {
+		const authToken = await SecureStore.getItemAsync('login_token');
+		const userId = await SecureStore.getItemAsync('user_id');
+		if (!userId) {
+			console.log('No user id found');
+			return;
+		}
 
-	const url = new URL(`${process.env.API_URL}/users/${userId}`);
-	const response = await fetch(url, {
-		method: 'PUT',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
-		body: JSON.stringify({
-			googlePurchaseToken: purchaseToken,
-		}),
-	});
-	const json = await response.json();
-	console.log(json);
+		const url = new URL(`${process.env.API_URL}/users/${userId}`);
+		const response = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${authToken}`,
+			},
+			body: JSON.stringify({
+				googlePurchaseToken: purchaseToken,
+			}),
+		});
+		const json = await response.json();
+		console.log(json);
+	} catch (error) {
+		console.log(error.message);
+	}
 };
 
 const setUserAppAccountToken = async (appAccountToken) => {
-	const authToken = await SecureStore.getItemAsync('login_token');
-	const userId = await SecureStore.getItemAsync('user_id');
-	if (!userId) {
-		console.log('No user id found');
-		return;
-	}
+	try {
+		const authToken = await SecureStore.getItemAsync('login_token');
+		const userId = await SecureStore.getItemAsync('user_id');
+		if (!userId) {
+			console.log('No user id found');
+			return;
+		}
 
-	const url = new URL(`${process.env.API_URL}/users/${userId}`);
-	const response = await fetch(url, {
-		method: 'PUT',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
-		body: JSON.stringify({
-			appleAppAccountToken: appAccountToken,
-		}),
-	});
-	const json = await response.json();
-	console.log(json);
+		const url = new URL(`${process.env.API_URL}/users/${userId}`);
+		const response = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${authToken}`,
+			},
+			body: JSON.stringify({
+				appleAppAccountToken: appAccountToken,
+			}),
+		});
+		const json = await response.json();
+		console.log(json);
+	} catch (error) {
+		console.log(error.message);
+	}
 };
 
 const getUserSubscriptionStatus = async () => {
-	const authToken = await SecureStore.getItemAsync('login_token');
-	const userId = await SecureStore.getItemAsync('user_id');
-	if (!userId) {
-		console.log('No user id found');
-		return;
-	}
+	try {
+		const authToken = await SecureStore.getItemAsync('login_token');
+		const userId = await SecureStore.getItemAsync('user_id');
+		if (!userId) {
+			console.log('No user id found');
+			return;
+		}
 
-	const url = new URL(`${process.env.API_URL}/users/${userId}`);
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${authToken}`,
-		},
-	});
-	const json = await response.json();
-	return {
-		status: json.isSubscriptionActive,
-		exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
-	};
+		const url = new URL(`${process.env.API_URL}/users/${userId}`);
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${authToken}`,
+			},
+		});
+		const json = await response.json();
+		return {
+			status: json.isSubscriptionActive,
+			exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
+		};
+	} catch (error) {
+		console.log(error.message);
+	}
 };
 
 const Subscription = (props) => {
@@ -121,22 +133,26 @@ const Subscription = (props) => {
 		triesRemaining = 15,
 		setHasPurchased = null,
 	) => {
-		if (triesRemaining === 15) {
-			if (setHasPurchased) {
-				setHasPurchased(true);
+		try {
+			if (triesRemaining === 15) {
+				if (setHasPurchased) {
+					setHasPurchased(true);
+				}
 			}
-		}
-		if (triesRemaining === 0) {
-			return;
-		}
-		await new Promise((resolve) => setTimeout(resolve, 3_000));
-		const { status, exists } = await getUserSubscriptionStatus();
-		setIsSubscribed(status === true);
-		setHasSubscription(exists === true);
-		if (!status) {
-			await pollAfterPurchase(triesRemaining - 1);
-		} else {
-			await signInSilently(setIsSignedIn, null, true);
+			if (triesRemaining === 0) {
+				return;
+			}
+			await new Promise((resolve) => setTimeout(resolve, 3_000));
+			const { status, exists } = await getUserSubscriptionStatus();
+			setIsSubscribed(status === true);
+			setHasSubscription(exists === true);
+			if (!status) {
+				await pollAfterPurchase(triesRemaining - 1);
+			} else {
+				await signInSilently(setIsSignedIn, null, true);
+			}
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 
@@ -176,8 +192,11 @@ const Subscription = (props) => {
 				}
 			}
 		};
-
-		handleFinishPurchase();
+		try {
+			handleFinishPurchase();
+		} catch (error) {
+			console.log(error.message);
+		}
 	}, [currentPurchase, currentPurchaseError]);
 
 	const subscribe = async () => {

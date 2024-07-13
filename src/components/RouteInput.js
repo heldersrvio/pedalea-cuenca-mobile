@@ -108,16 +108,7 @@ const RouteInput = (props) => {
 		useContext(SubscriptionContext);
 
 	const handleCoordinatesIfSignedIn = async () => {
-		if (await verifySubscription(null, setHasSubscription)) {
-			getRouteForCoordinates(
-				sCoords?.lat,
-				sCoords?.lon,
-				dCoords?.lat,
-				dCoords?.lon,
-				props.handleRoute,
-			);
-		} else {
-			await signInSilently(setIsSignedIn, null, true);
+		try {
 			if (await verifySubscription(null, setHasSubscription)) {
 				getRouteForCoordinates(
 					sCoords?.lat,
@@ -126,22 +117,39 @@ const RouteInput = (props) => {
 					dCoords?.lon,
 					props.handleRoute,
 				);
-			} else if (props.enableSubscribeModal) {
-				props.enableSubscribeModal();
+			} else {
+				await signInSilently(setIsSignedIn, null, true);
+				if (await verifySubscription(null, setHasSubscription)) {
+					getRouteForCoordinates(
+						sCoords?.lat,
+						sCoords?.lon,
+						dCoords?.lat,
+						dCoords?.lon,
+						props.handleRoute,
+					);
+				} else if (props.enableSubscribeModal) {
+					props.enableSubscribeModal();
+				}
 			}
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 
 	useEffect(() => {
 		const handleCoordinates = async () => {
-			if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
-				if (isSignedIn) {
-					await handleCoordinatesIfSignedIn();
-				} else {
-					if (props.enableSignInModal) {
-						props.enableSignInModal();
+			try {
+				if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
+					if (isSignedIn) {
+						await handleCoordinatesIfSignedIn();
+					} else {
+						if (props.enableSignInModal) {
+							props.enableSignInModal();
+						}
 					}
 				}
+			} catch (error) {
+				console.log(error.message);
 			}
 		};
 
@@ -168,8 +176,12 @@ const RouteInput = (props) => {
 
 	useEffect(() => {
 		const checkLocationPermission = async () => {
-			if (locationStatus === null) {
-				await requestPermission();
+			try {
+				if (locationStatus === null) {
+					await requestPermission();
+				}
+			} catch (error) {
+				console.log(error.message);
 			}
 		};
 		checkLocationPermission();

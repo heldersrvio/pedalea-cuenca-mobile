@@ -20,21 +20,25 @@ GoogleSignin.configure({
 });
 
 const signInToBackEnd = async (idToken, authenticationProvider = null) => {
-	const url = new URL(`${process.env.API_URL}/signin`);
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			idToken,
-			authenticationProvider,
-		}),
-	});
-	const json = await response.json();
-	await SecureStore.setItemAsync('login_token', json.token);
-	await SecureStore.setItemAsync('user_id', json.userId);
+	try {
+		const url = new URL(`${process.env.API_URL}/signin`);
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				idToken,
+				authenticationProvider,
+			}),
+		});
+		const json = await response.json();
+		await SecureStore.setItemAsync('login_token', json.token);
+		await SecureStore.setItemAsync('user_id', json.userId);
+	} catch (error) {
+		console.log(error.message);
+	}
 };
 
 export const signIn = async (
@@ -137,35 +141,45 @@ export const signInSilently = async (
 };
 
 export const validateToken = async () => {
-	const token = await SecureStore.getItemAsync('login_token');
-	if (!token) {
+	try {
+		const token = await SecureStore.getItemAsync('login_token');
+		if (!token) {
+			return false;
+		}
+		const decodedToken = jwtDecode(token);
+		if (decodedToken.expiration * 1_000 < new Date().getTime() + 300) {
+			return false;
+		}
+		return true;
+	} catch (error) {
+		console.log(error.message);
 		return false;
 	}
-	const decodedToken = jwtDecode(token);
-	if (decodedToken.expiration * 1_000 < new Date().getTime() + 300) {
-		return false;
-	}
-	return true;
 };
 
 export const verifySubscription = async (
 	setIsSubscribed = null,
 	setHasSubscription = null,
 ) => {
-	const token = await SecureStore.getItemAsync('login_token');
-	if (!token) {
+	try {
+		const token = await SecureStore.getItemAsync('login_token');
+		if (!token) {
+			return false;
+		}
+		const decodedToken = jwtDecode(token);
+		console.log(decodedToken);
+		if (setIsSubscribed) {
+			setIsSubscribed(decodedToken.isSubscriptionActive === true);
+		}
+		if (setHasSubscription) {
+			setHasSubscription(
+				!!decodedToken.googlePurchaseToken ||
+					!!decodedToken.appleAppAccountToken,
+			);
+		}
+		return decodedToken.isSubscriptionActive;
+	} catch (error) {
+		console.log(error.message);
 		return false;
 	}
-	const decodedToken = jwtDecode(token);
-	console.log(decodedToken);
-	if (setIsSubscribed) {
-		setIsSubscribed(decodedToken.isSubscriptionActive === true);
-	}
-	if (setHasSubscription) {
-		setHasSubscription(
-			!!decodedToken.googlePurchaseToken ||
-				!!decodedToken.appleAppAccountToken,
-		);
-	}
-	return decodedToken.isSubscriptionActive;
 };

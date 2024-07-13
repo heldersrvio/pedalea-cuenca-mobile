@@ -18,31 +18,35 @@ const Account = (_props) => {
 	} = useContext(SubscriptionContext);
 
 	const getUserSubscriptionStatus = async () => {
-		const authToken = await SecureStore.getItemAsync('login_token');
-		const userId = await SecureStore.getItemAsync('user_id');
-		if (!userId) {
-			console.log('No user id found');
-			return;
-		}
+		try {
+			const authToken = await SecureStore.getItemAsync('login_token');
+			const userId = await SecureStore.getItemAsync('user_id');
+			if (!userId) {
+				console.log('No user id found');
+				return;
+			}
 
-		const url = new URL(`${process.env.API_URL}/users/${userId}`);
-		const response = await fetch(url, {
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${authToken}`,
-			},
-		});
-		const json = await response.json();
-		setIsSubscribed(json.isSubscriptionActive === true);
-		setHasSubscription(
-			!!json.googlePurchaseToken || !!json.appleAppAccountToken,
-		);
-		return {
-			status: json.isSubscriptionActive,
-			exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
-		};
+			const url = new URL(`${process.env.API_URL}/users/${userId}`);
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${authToken}`,
+				},
+			});
+			const json = await response.json();
+			setIsSubscribed(json.isSubscriptionActive === true);
+			setHasSubscription(
+				!!json.googlePurchaseToken || !!json.appleAppAccountToken,
+			);
+			return {
+				status: json.isSubscriptionActive,
+				exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
+			};
+		} catch (error) {
+			console.log(error.message);
+		}
 	};
 
 	useEffect(() => {
