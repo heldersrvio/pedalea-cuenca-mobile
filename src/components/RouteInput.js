@@ -139,7 +139,12 @@ const RouteInput = (props) => {
 	useEffect(() => {
 		const handleCoordinates = async () => {
 			try {
-				if (sCoords?.lat && sCoords?.lon && dCoords?.lat && dCoords?.lon) {
+				if (
+					sCoords?.lat &&
+					sCoords?.lon &&
+					dCoords?.lat &&
+					dCoords?.lon
+				) {
 					if (isSignedIn) {
 						await handleCoordinatesIfSignedIn();
 					} else {

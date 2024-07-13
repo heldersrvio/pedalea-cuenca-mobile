@@ -151,7 +151,8 @@ const App = () => {
 										(!drawer.needsLogIn &&
 											!drawer.needsLogOut)) &&
 									(!drawer.appleOnly ||
-										(drawer.appleOnly && Platform.OS === 'ios'))
+										(drawer.appleOnly &&
+											Platform.OS === 'ios'))
 								) {
 									return (
 										<Drawer.Screen

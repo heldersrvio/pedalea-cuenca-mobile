@@ -42,7 +42,8 @@ const Account = (_props) => {
 			);
 			return {
 				status: json.isSubscriptionActive,
-				exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
+				exists:
+					!!json.googlePurchaseToken || !!json.appleAppAccountToken,
 			};
 		} catch (error) {
 			console.log(error.message);

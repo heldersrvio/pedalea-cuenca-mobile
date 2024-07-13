@@ -249,17 +249,24 @@ const Subscription = (props) => {
 					al mes.
 				</Text>
 			) : null}
-			{subscriptions && subscriptions?.length > 0 ? <Button
-				title={
-					props.label
-						? props.label
-						: isFreeTrialAvailable
-							? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
-							: 'Suscríbete'
-				}
-				onPress={subscribe}
-				style={styles.button}
-			/> : <Text>Suscripciones no están disponibles en este entorno. Utiliza una cuenta con acceso al servicio.</Text>}
+			{subscriptions && subscriptions?.length > 0 ? (
+				<Button
+					title={
+						props.label
+							? props.label
+							: isFreeTrialAvailable
+								? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
+								: 'Suscríbete'
+					}
+					onPress={subscribe}
+					style={styles.button}
+				/>
+			) : (
+				<Text>
+					Suscripciones no están disponibles en este entorno. Utiliza
+					una cuenta con acceso al servicio.
+				</Text>
+			)}
 		</View>
 	) : (
 		<ActivityIndicator size="large" />

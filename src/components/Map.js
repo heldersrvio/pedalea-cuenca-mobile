@@ -89,13 +89,15 @@ const Map = (props) => {
 									: Math.abs(
 												props.route[index - 1].lat2 -
 													way.lat1 +
-													props.route[index - 1].lon2 -
+													props.route[index - 1]
+														.lon2 -
 													way.lon1,
 										  ) <
 										  Math.abs(
 												props.route[index - 1].lat2 -
 													way.lat2 +
-													props.route[index - 1].lon2 -
+													props.route[index - 1]
+														.lon2 -
 													way.lon2,
 										  )
 										? {
