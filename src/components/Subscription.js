@@ -230,7 +230,7 @@ const Subscription = (props) => {
 					al mes.
 				</Text>
 			) : null}
-			<Button
+			{subscriptions && subscriptions?.length > 0 ? <Button
 				title={
 					props.label
 						? props.label
@@ -240,7 +240,7 @@ const Subscription = (props) => {
 				}
 				onPress={subscribe}
 				style={styles.button}
-			/>
+			/> : <Text>Suscripciones no están disponibles en este entorno. Utiliza una cuenta con acceso al servicio.</Text>}
 		</View>
 	) : (
 		<ActivityIndicator size="large" />
