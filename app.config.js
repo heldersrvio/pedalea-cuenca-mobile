@@ -24,6 +24,14 @@ module.exports = {
 			},
 		},
 		plugins: [
+			[
+				'expo-build-properties',
+				{
+					android: {
+						enableProguardInReleaseBuilds: true,
+					},
+				},
+			],
 			'@react-native-google-signin/google-signin',
 			'expo-secure-store',
 			'@react-native-firebase/app',
