@@ -2,7 +2,14 @@ import React, { useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import SignInContext from '../contexts/SignInContext';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Button, Alert, View, StyleSheet } from 'react-native';
+import {
+	Button,
+	Alert,
+	View,
+	StyleSheet,
+	Platform,
+	ToastAndroid,
+} from 'react-native';
 
 const DeleteAccount = (props) => {
 	const { setIsSignedIn } = useContext(SignInContext);
@@ -56,6 +63,12 @@ const DeleteAccount = (props) => {
 						onPress: async () => {
 							await deleteUser();
 							await signOut();
+							if (Platform.OS === 'android') {
+								ToastAndroid.show(
+									'Tu cuenta ha sido eliminada',
+									ToastAndroid.SHORT,
+								);
+							}
 						},
 					},
 				],
