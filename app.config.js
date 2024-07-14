@@ -26,6 +26,8 @@ module.exports = {
 		plugins: [
 			'@react-native-google-signin/google-signin',
 			'expo-secure-store',
+			'@react-native-firebase/app',
+			'@react-native-firebase/crashlytics',
 			'./src/plugins/withAndroidStrategies.js',
 			'./src/plugins/withSupportLibVersion.js',
 			[
