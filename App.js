@@ -20,9 +20,6 @@ import {
 	flushFailedPurchasesCachedAsPendingAndroid,
 	clearTransactionIOS,
 } from 'react-native-iap';
-import * as SplashScreen from 'expo-splash-screen';
-
-SplashScreen.preventAutoHideAsync();
 
 const Drawer = createDrawerNavigator();
 
@@ -51,16 +48,14 @@ const App = () => {
 		};
 
 		const clearCacheAndFetchSubscriptions = async () => {
-			if (Platform.OS === 'android') {
-				await flushFailedPurchasesCachedAsPendingAndroid();
-				await fetchSubscriptions();
-				await SplashScreen.hideAsync();
-				setHasLoadedSubscriptions(true);
-			} else {
-				await SplashScreen.hideAsync();
-				await clearTransactionIOS();
+			try {
+				if (Platform.OS === 'ios') {
+					await clearTransactionIOS();
+				}
 				await fetchSubscriptions();
 				setHasLoadedSubscriptions(true);
+			} catch (error) {
+				console.log(error);
 			}
 		};
 

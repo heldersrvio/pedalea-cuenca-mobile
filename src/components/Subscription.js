@@ -12,7 +12,6 @@ import SubscriptionContext from '../contexts/SubscriptionContext';
 import {
 	useIAP,
 	requestSubscription,
-	flushFailedPurchasesCachedAsPendingAndroid,
 	clearTransactionIOS,
 } from 'react-native-iap';
 import * as SecureStore from 'expo-secure-store';
