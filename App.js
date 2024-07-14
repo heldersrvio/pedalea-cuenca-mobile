@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from 'react';
 import { StyleSheet, View, ToastAndroid, Platform } from 'react-native';
+import ErrorBoundary from './src/components/ErrorBoundary';
 import Navigation from './src/components/screens/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -120,67 +121,72 @@ const App = () => {
 	};
 
 	return (
-		<NavigationContainer>
-			<SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
-				<SubscriptionContext.Provider
-					value={{
-						isSubscribed,
-						setIsSubscribed,
-						hasSubscription,
-						setHasSubscription,
-						isFreeTrialAvailable,
-						setIsFreeTrialAvailable,
-						hasLoadedSubscriptions,
-					}}
-				>
-					<Drawer.Navigator
-						drawerType="front"
-						initialRouteName="Navegación"
-						drawerContent={CustomDrawerContent}
+		<ErrorBoundary>
+			<NavigationContainer>
+				<SignInContext.Provider value={{ isSignedIn, setIsSignedIn }}>
+					<SubscriptionContext.Provider
+						value={{
+							isSubscribed,
+							setIsSubscribed,
+							hasSubscription,
+							setHasSubscription,
+							isFreeTrialAvailable,
+							setIsFreeTrialAvailable,
+							hasLoadedSubscriptions,
+						}}
 					>
-						{MenuItems.map((drawer) => {
-							try {
-								if (
-									((drawer.needsLogIn && isSignedIn) ||
-										(drawer.needsLogOut && !isSignedIn) ||
-										(!drawer.needsLogIn &&
-											!drawer.needsLogOut)) &&
-									(!drawer.appleOnly ||
-										(drawer.appleOnly &&
-											Platform.OS === 'ios'))
-								) {
-									return (
-										<Drawer.Screen
-											key={drawer.name}
-											name={drawer.name}
-											options={{
-												drawerIcon: () => (
-													<Ionicons
-														name={drawer.iconName}
-														size={24}
-														color="black"
+						<Drawer.Navigator
+							drawerType="front"
+							initialRouteName="Navegación"
+							drawerContent={CustomDrawerContent}
+						>
+							{MenuItems.map((drawer) => {
+								try {
+									if (
+										((drawer.needsLogIn && isSignedIn) ||
+											(drawer.needsLogOut &&
+												!isSignedIn) ||
+											(!drawer.needsLogIn &&
+												!drawer.needsLogOut)) &&
+										(!drawer.appleOnly ||
+											(drawer.appleOnly &&
+												Platform.OS === 'ios'))
+									) {
+										return (
+											<Drawer.Screen
+												key={drawer.name}
+												name={drawer.name}
+												options={{
+													drawerIcon: () => (
+														<Ionicons
+															name={
+																drawer.iconName
+															}
+															size={24}
+															color="black"
+														/>
+													),
+												}}
+												component={drawer.component}
+												drawerContent={(props) => (
+													<CustomDrawerContent
+														{...props}
+														signOut={signOut}
 													/>
-												),
-											}}
-											component={drawer.component}
-											drawerContent={(props) => (
-												<CustomDrawerContent
-													{...props}
-													signOut={signOut}
-												/>
-											)}
-										/>
-									);
+												)}
+											/>
+										);
+									}
+								} catch (error) {
+									console.log(error.message);
 								}
-							} catch (error) {
-								console.log(error.message);
-							}
-							return null;
-						})}
-					</Drawer.Navigator>
-				</SubscriptionContext.Provider>
-			</SignInContext.Provider>
-		</NavigationContainer>
+								return null;
+							})}
+						</Drawer.Navigator>
+					</SubscriptionContext.Provider>
+				</SignInContext.Provider>
+			</NavigationContainer>
+		</ErrorBoundary>
 	);
 };
 
