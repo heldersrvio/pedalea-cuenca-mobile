@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import SignInContext from '../../contexts/SignInContext';
+import SubscriptionContext from '../../contexts/SubscriptionContext';
 import { StyleSheet, View, Text, Linking } from 'react-native';
 
 const Contact = (_props) => {
 	const EMAIL_ADDRESS = 'contacto@pedaleacuenca.com';
 	const TELEPHONE = '0958879836';
+	const { isSignedIn } = useContext(SignInContext);
+	const { hasSubscription, isSubscribed } = useContext(SubscriptionContext);
 
 	return (
 		<View style={styles.container}>
@@ -20,15 +24,17 @@ const Contact = (_props) => {
 					{EMAIL_ADDRESS}
 				</Text>
 			</View>
-			<View style={styles.contactField}>
-				<Text style={styles.label}>Teléfono: </Text>
-				<Text
-					style={styles.link}
-					onPress={() => Linking.openURL(`tel:${TELEPHONE}`)}
-				>
-					{TELEPHONE}
-				</Text>
-			</View>
+			{isSignedIn && (hasSubscription || isSubscribed) ? (
+				<View style={styles.contactField}>
+					<Text style={styles.label}>Teléfono: </Text>
+					<Text
+						style={styles.link}
+						onPress={() => Linking.openURL(`tel:${TELEPHONE}`)}
+					>
+						{TELEPHONE}
+					</Text>
+				</View>
+			) : null}
 		</View>
 	);
 };
