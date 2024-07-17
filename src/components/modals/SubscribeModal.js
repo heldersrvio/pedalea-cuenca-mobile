@@ -53,7 +53,7 @@ const SubscribeModal = (props) => {
 						<Subscription
 							label={
 								isFreeTrialAvailable
-									? `Intenta grátis por ${FREE_TRIAL_DAYS} días`
+									? `Intenta gratis por ${FREE_TRIAL_DAYS} días`
 									: 'Suscríbete'
 							}
 							whenSubscribe={() => setIsLoading(true)}
