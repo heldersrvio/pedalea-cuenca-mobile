@@ -22,8 +22,8 @@ const androidSubscriptionId = 'basic_1';
 const iosSubscriptionId = 'subscription_1';
 
 const FREE_TRIAL_DAYS = 3;
-const PRICE_ANDROID = 5.99;
-const PRICE_IOS = 6.99;
+const PRICE_ANDROID = 1.99;
+const PRICE_IOS = 2.99;
 
 const setUserPurchaseToken = async (purchaseToken) => {
 	try {
