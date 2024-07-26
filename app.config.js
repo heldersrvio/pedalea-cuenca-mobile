@@ -2,7 +2,7 @@ module.exports = {
 	expo: {
 		name: 'Pedalea Cuenca',
 		slug: 'pedaleacuenca',
-		version: '1.0.0',
+		version: '1.0.1',
 		orientation: 'portrait',
 		icon: './assets/images/icon.png',
 		userInterfaceStyle: 'light',
@@ -29,6 +29,9 @@ module.exports = {
 				{
 					android: {
 						enableProguardInReleaseBuilds: true,
+					},
+					ios: {
+						useFrameworks: 'static',
 					},
 				},
 			],
