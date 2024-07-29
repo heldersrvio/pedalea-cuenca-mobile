@@ -30,6 +30,7 @@ const iosSubscriptionId = 'subscription_1';
 const App = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false);
 	const [isSubscribed, setIsSubscribed] = useState(false);
+	const [hasDiscount, setHasDiscount] = useState(false);
 	const [hasSubscription, setHasSubscription] = useState(false);
 	const [isFreeTrialAvailable, setIsFreeTrialAvailable] = useState(false);
 	const [hasLoadedSubscriptions, setHasLoadedSubscriptions] = useState(false);
@@ -129,6 +130,8 @@ const App = () => {
 							isSubscribed,
 							setIsSubscribed,
 							hasSubscription,
+							hasDiscount,
+							setHasDiscount,
 							setHasSubscription,
 							isFreeTrialAvailable,
 							setIsFreeTrialAvailable,

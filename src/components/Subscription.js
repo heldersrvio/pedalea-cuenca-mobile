@@ -103,6 +103,7 @@ const getUserSubscriptionStatus = async () => {
 		return {
 			status: json.isSubscriptionActive,
 			exists: !!json.googlePurchaseToken || !!json.appleAppAccountToken,
+			hasDiscount: !!json.hasDiscount,
 		};
 	} catch (error) {
 		console.log(error.message);
@@ -121,6 +122,8 @@ const Subscription = (props) => {
 	const {
 		setIsSubscribed,
 		setHasSubscription,
+		setHasDiscount,
+		hasDiscount,
 		isFreeTrialAvailable,
 		hasLoadedSubscriptions,
 	} = useContext(SubscriptionContext);
@@ -142,9 +145,10 @@ const Subscription = (props) => {
 				return;
 			}
 			await new Promise((resolve) => setTimeout(resolve, 3_000));
-			const { status, exists } = await getUserSubscriptionStatus();
+			const { status, exists, hasDiscount } = await getUserSubscriptionStatus();
 			setIsSubscribed(status === true);
 			setHasSubscription(exists === true);
+			setHasDiscount(hasDiscount === true);
 			if (!status) {
 				await pollAfterPurchase(triesRemaining - 1);
 			} else {
@@ -203,8 +207,12 @@ const Subscription = (props) => {
 			setHasRequestedSubscription(true);
 			if (subscriptions && subscriptions?.[0]) {
 				const subscription = subscriptions[0];
-				const offerToken =
-					subscription?.subscriptionOfferDetails?.[0]?.offerToken;
+				const subscriptionOfferDetails = subscription?.subscriptionOfferDetails;
+				const discountOffer = subscriptionOfferDetails?.filter((offer) => offer?.offerId === 'discount')?.[0];
+				const standardOffer = subscriptionOfferDetails?.filter((offer) => offer?.offerId !== 'discount')?.[0];
+				const offer = hasDiscount && discountOffer?.offerToken ? discountOffer : standardOffer;
+
+				const offerToken = offer?.offerToken;
 
 				if (Platform.OS === 'ios') {
 					await clearTransactionIOS();
